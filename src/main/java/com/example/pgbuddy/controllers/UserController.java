@@ -1,13 +1,15 @@
 package com.example.pgbuddy.controllers;
 
-import com.example.pgbuddy.Dtos.*;
-import com.example.pgbuddy.models.*;
-import com.example.pgbuddy.services.*;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
+import com.example.pgbuddy.Dtos.UserDto;
+import com.example.pgbuddy.services.UserService;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
+@RequestMapping("/api/users")
 public class UserController {
     private final UserService userService;
 
@@ -15,13 +17,11 @@ public class UserController {
         this.userService = userService;
     }
 
-    @PostMapping("/signup")
-    public User signUp(@RequestBody SignUpRequestDto signUpRequestDto) {
-        return userService.signUp(signUpRequestDto.getEmail(), signUpRequestDto.getPassword());
-    }
-
-    @PostMapping("/signin")
-    public boolean signIn(@RequestBody SignUpRequestDto signUpRequestDto) {
-        return userService.signIn(signUpRequestDto.getEmail(), signUpRequestDto.getPassword());
+    // Get user by ID (for Roommate Finder or profile view)
+    @GetMapping("/{id}")
+    //@PreAuthorize("hasRole('RESIDENT') or hasRole('ADMIN')")
+    public ResponseEntity<UserDto> getUserById(@PathVariable Long id) {
+        UserDto user = userService.findUserById(id);
+        return ResponseEntity.ok(user);
     }
 }

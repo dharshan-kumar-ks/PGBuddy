@@ -1,38 +1,36 @@
 package com.example.pgbuddy.services;
 
-import com.example.pgbuddy.models.*;
+import com.example.pgbuddy.Dtos.UserDto;
+import com.example.pgbuddy.models.User;
 import com.example.pgbuddy.repositories.UserRepository;
 import org.springframework.stereotype.Service;
 
-import java.util.Optional;
-
 @Service
 public class UserService {
-    private UserRepository userRepository;
+    private final UserRepository userRepository;
 
     public UserService(UserRepository userRepository) {
         this.userRepository = userRepository;
     }
 
-    public User signUp(String email, String password) {
-        // Check if user already exist & get that user in DB (based on the email)
-        Optional<User> userOptional = userRepository.findByEmail(email);
-        if (userOptional.isPresent()) {
-            throw new IllegalArgumentException("User already exists");
-        }
-
-        // if User is not present in DB -> create this new user & save in userRepository
-        User user = new User();
-        user.setEmail(email);
-        user.setPassword(password);
-
-        return userRepository.save(user);
+    // Find user by ID
+    public UserDto findUserById(Long id) {
+        User user = userRepository.findById(id)
+                .orElseThrow();
+                //.orElseThrow(() -> new UsernameNotFoundException("User not found with ID: " + id));
+        return mapToDTO(user);
     }
 
-    public boolean signIn(String email, String password) {
-        // Get the user object using its email from DB
-        User user = userRepository.findByEmail(email).get();
-
-        return password == user.getPassword();
+    // Helper method to map User entity to UserDto
+    private UserDto mapToDTO(User user) {
+        UserDto dto = new UserDto();
+        dto.setId(user.getId());
+        dto.setName(user.getName());
+        dto.setEmail(user.getEmail());
+        dto.setPhoneNumber(String.valueOf(user.getPhoneNumber()));
+        dto.setUserType(user.getUserType().name());
+        dto.setRoomId(user.getRoom() != null ? user.getRoom().getId() : null);
+        return dto;
     }
+
 }

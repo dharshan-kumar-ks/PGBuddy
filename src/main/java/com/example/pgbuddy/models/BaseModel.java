@@ -1,12 +1,17 @@
 package com.example.pgbuddy.models;
 
 import jakarta.persistence.*;
+import lombok.Getter;
+import lombok.Setter;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
+import java.time.LocalDateTime;
 import java.util.Date;
 
+@Getter
+@Setter
 // used to define a class that can be inherited by entities but is not itself an entity.
 // allows us to extract common attributes or behavior into a superclass, which are then inherited by subclasses that are entities.
 // superclass itself is not mapped to a database table, but its attributes are included in the tables of its subclasses
@@ -26,9 +31,9 @@ public class BaseModel {
     @CreatedDate
     @Column(updatable = false) // Prevent updates after creation
     @Temporal(TemporalType.TIMESTAMP)
-    private Date createdAt;
+    private LocalDateTime createdAt;
 
     @LastModifiedDate
     @Temporal(TemporalType.TIMESTAMP)
-    private Date lastModifiedAt;
+    private LocalDateTime lastModifiedAt;
 }
