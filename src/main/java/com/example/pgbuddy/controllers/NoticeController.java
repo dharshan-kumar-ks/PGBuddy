@@ -11,7 +11,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/api/notices")
-@CrossOrigin(origins = "http://localhost:5173") // Allow requests from React
+//@CrossOrigin(origins = "http://localhost:5173") // Allow requests from React
 public class NoticeController {
     private final NoticeService noticeService;
 
