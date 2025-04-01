@@ -1,6 +1,7 @@
 package com.example.pgbuddy.services;
 
 import com.example.pgbuddy.Dtos.NoticeDto;
+import com.example.pgbuddy.models.Notice;
 import com.example.pgbuddy.repositories.NoticeRepository;
 import org.springframework.stereotype.Service;
 
@@ -36,5 +37,17 @@ public class NoticeService {
                     return dto;
                 })
                 .toList();
+    }
+
+    public void updateBookmarkStatus(Long id, boolean bookmarked) {
+        // Find the notice by ID
+        Notice notice = noticeRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Notice not found"));
+
+        // Update the bookmarked status
+        notice.setBookmarked(bookmarked);
+
+        // Save the updated notice back to the repository
+        noticeRepository.save(notice);
     }
 }

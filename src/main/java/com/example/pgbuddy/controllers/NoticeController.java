@@ -30,6 +30,15 @@ public class NoticeController {
         return ResponseEntity.ok(notices);
     }
 
+    // a POSTMapping method to update the bookmarked status of a notice
+    @PostMapping("/{id}/bookmark")
+    public ResponseEntity<Void> updateBookmarkStatus(@PathVariable Long id, @RequestBody boolean bookmarked) {
+        // Call the service to update the bookmark status
+        noticeService.updateBookmarkStatus(id, bookmarked);
+        // Return a response indicating success (HTTP 200 OK)
+        return ResponseEntity.ok().build();
+    }
+
     /*
     // Get user by ID (for Roommate Finder or profile view)
     @GetMapping("/{id}")
