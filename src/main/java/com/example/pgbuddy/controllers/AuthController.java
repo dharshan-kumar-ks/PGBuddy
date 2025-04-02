@@ -23,7 +23,7 @@ public class AuthController {
     }
 
     @PostMapping("/api/signin")
-    public boolean signIn(@RequestBody SignUpRequestDto signUpRequestDto) {
+    public SignInResponseDto signIn(@RequestBody SignUpRequestDto signUpRequestDto) {
         return authService.signIn(signUpRequestDto.getEmail(), signUpRequestDto.getPassword());
     }
 }

@@ -8,6 +8,7 @@ import com.example.pgbuddy.repositories.UserRepository;
 import org.springframework.stereotype.Service;
 import com.example.pgbuddy.models.*;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Service
@@ -35,6 +36,7 @@ public class TicketService {
         ticket.setPriority(PriorityType.valueOf(ticketDto.getPriority()));
         ticket.setTicketType(TicketType.valueOf(ticketDto.getTicketType()));
         ticket.setStatus(ResolutionStatus.valueOf(ticketDto.getStatus()));
+        ticket.setCreatedAt(LocalDateTime.now());
 
         // Set user and assignedTo manually if they exist
         if (ticketDto.getUserId() != null) {
@@ -63,6 +65,7 @@ public class TicketService {
         dto.setPriority(ticket.getPriority().name());
         dto.setTicketType(ticket.getTicketType().name());
         dto.setStatus(ticket.getStatus().name());
+        dto.setCreatedAt(ticket.getCreatedAt());
 
         if (ticket.getUser() != null) {
             dto.setUserId(ticket.getUser().getId());

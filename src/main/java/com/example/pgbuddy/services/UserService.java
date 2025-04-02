@@ -15,22 +15,23 @@ public class UserService {
 
     // Find user by ID
     public UserDto findUserById(Long id) {
-        User user = userRepository.findById(id)
-                .orElseThrow();
+        User user = userRepository.findById(id).orElseThrow(() -> new RuntimeException("User not found"));
                 //.orElseThrow(() -> new UsernameNotFoundException("User not found with ID: " + id));
         return mapToDTO(user);
     }
 
     // Helper method to map User entity to UserDto
     private UserDto mapToDTO(User user) {
-        UserDto dto = new UserDto();
-        dto.setId(user.getId());
-        dto.setName(user.getName());
-        dto.setEmail(user.getEmail());
-        dto.setPhoneNumber(String.valueOf(user.getPhoneNumber()));
-        dto.setUserType(user.getUserType().name());
-        dto.setRoomId(user.getRoom() != null ? user.getRoom().getId() : null);
-        return dto;
+        UserDto userDto = new UserDto();
+        userDto.setId(user.getId());
+        userDto.setEmail(user.getEmail());
+        userDto.setName(user.getName());
+        if (user.getUserType() != null) {
+            userDto.setUserType(user.getUserType().name());
+        } else {
+            userDto.setUserType(null); // or set a default value if needed
+        }
+        return userDto;
     }
 
 }
