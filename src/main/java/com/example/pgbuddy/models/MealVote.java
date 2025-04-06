@@ -30,4 +30,6 @@ public class MealVote extends BaseModel {
 
     @Enumerated(EnumType.STRING)
     private MealDayType mealDayType; // MONDAY / TUESDAY / WEDNESDAY etc...
+
+    private int voteCount; // Counter for votes
 }
