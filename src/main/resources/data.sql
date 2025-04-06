@@ -31,3 +31,106 @@ INSERT INTO notices (id, created_at, last_modified_at, bookmarked, content, titl
 (3, '2025-02-10 09:30:00.000000', NULL, false, NULL, 'Room Cleaning Schedule: 2nd Floor Cleaning at 3 PM', 1),
 (2, '2025-02-05 14:20:45.000000', NULL, false, NULL, 'Hot Water Supply Interruption: 9 AM - 11 AM', 1),
 (1, '2025-02-01 10:15:30.000000', NULL, false, NULL, 'Dinner Menu Update: Special Paneer Dish Added Tonight', 1);
+
+
+-- drop meal_name column from meals table
+ALTER TABLE meal_votes DROP COLUMN user_id;
+
+-- drop meal_meal_add_on table
+DROP TABLE meal_votes;
+
+-- populate meals table with dummy data for 6 rows
+INSERT INTO meals (id, created_at, last_modified_at, meal_type, meal_image_url) VALUES
+(1, '2025-03-31 10:00:00.000000', NULL, 'VEG', 'meals-1.jpg'),
+(2, '2025-03-31 12:00:00.000000', NULL, 'VEG', 'meals-1.jpg'),
+(3, '2025-03-31 18:00:00.000000', NULL, 'NONVEG', 'meals-1.jpg'),
+(4, '2025-03-31 16:00:00.000000', NULL, 'VEG', 'meals-1.jpg'),
+(5, '2025-03-31 11:00:00.000000', NULL, 'VEG', 'meals-1.jpg'),
+(6, '2025-03-31 20:00:00.000000', NULL, 'NONVEG', 'meals-1.jpg');
+
+-- populate meal_items table with dummy data for 6 rows
+INSERT INTO meal_items (meal_id, meal_items) VALUES
+(1, 'Rice'),
+(1, 'Dal'),
+(1, 'Vegetable Curry'),
+(2, 'Rice'),
+(2, 'Paneer Curry'),
+(3, 'Chicken Curry'),
+(4, 'Rice'),
+(4, 'Vegetable Curry'),
+(5, 'Rice'),
+(5, 'Dal'),
+(6, 'Chicken Curry');
+
+-- populate meal_add_ons table with dummy data for 6 rows
+INSERT INTO meal_add_on (meal_id, meal_add_on) VALUES
+(1, 'Salad'),
+(1, 'Raita'),
+(2, 'Salad'),
+(3, 'Raita'),
+(4, 'Salad'),
+(5, 'Raita'),
+(6, 'Salad');
+
+-- populate meal_votes table with dummy data for 6 rows
+INSERT INTO meal_votes (id, created_at, last_modified_at, meal_date, meal_day_type, meal_time_type, meal_id) VALUES
+(1, '2025-03-31 10:00:00.000000', NULL, '2025-03-31', 'MONDAY', 'BREAKFAST', 1),
+(2, '2025-03-31 12:00:00.000000', NULL, '2025-03-31', 'MONDAY', 'LUNCH', 2),
+(3, '2025-03-31 18:00:00.000000', NULL, '2025-03-31', 'MONDAY', 'DINNER', 3),
+(4, '2025-04-01 10:00:00.000000', NULL, '2025-04-01', 'TUESDAY', 'BREAKFAST', 4),
+(5, '2025-04-01 12:00:00.000000', NULL, '2025-04-01', 'TUESDAY', 'LUNCH', 5),
+(6, '2025-04-01 18:00:00.000000', NULL, '2025-04-01', 'TUESDAY', 'DINNER', 6);
+
+
+INSERT INTO meal_votes (id, created_at, last_modified_at, meal_date, meal_day_type, meal_time_type, meal_id) VALUES
+(4, '2025-04-01 10:00:00.000000', NULL, '2025-04-01', 'TUESDAY', 'BREAKFAST', 4),
+(5, '2025-04-01 12:00:00.000000', NULL, '2025-04-01', 'TUESDAY', 'LUNCH', 5),
+(6, '2025-04-01 18:00:00.000000', NULL, '2025-04-01', 'TUESDAY', 'DINNER', 6),
+(7, '2025-04-01 10:00:00.000000', NULL, '2025-04-01', 'TUESDAY', 'BREAKFAST', 1),
+(8, '2025-04-01 12:00:00.000000', NULL, '2025-04-01', 'TUESDAY', 'LUNCH', 2),
+(9, '2025-04-01 18:00:00.000000', NULL, '2025-04-01', 'TUESDAY', 'DINNER', 3),
+(10, '2025-04-01 10:00:00.000000', NULL, '2025-04-01', 'TUESDAY', 'BREAKFAST', 2),
+(11, '2025-04-01 12:00:00.000000', NULL, '2025-04-01', 'TUESDAY', 'LUNCH', 3),
+(12, '2025-04-01 18:00:00.000000', NULL, '2025-04-01', 'TUESDAY', 'DINNER', 4),
+(13, '2025-04-02 10:00:00.000000', NULL, '2025-04-02', 'WEDNESDAY', 'BREAKFAST', 1),
+(14, '2025-04-02 12:00:00.000000', NULL, '2025-04-02', 'WEDNESDAY', 'LUNCH', 2),
+(15, '2025-04-02 18:00:00.000000', NULL, '2025-04-02', 'WEDNESDAY', 'DINNER', 3),
+(16, '2025-04-02 10:00:00.000000', NULL, '2025-04-02', 'WEDNESDAY', 'BREAKFAST', 4),
+(17, '2025-04-02 12:00:00.000000', NULL, '2025-04-02', 'WEDNESDAY', 'LUNCH', 5),
+(18, '2025-04-02 18:00:00.000000', NULL, '2025-04-02', 'WEDNESDAY', 'DINNER', 6),
+(19, '2025-04-02 10:00:00.000000', NULL, '2025-04-02', 'WEDNESDAY', 'BREAKFAST', 2),
+(20, '2025-04-02 12:00:00.000000', NULL, '2025-04-02', 'WEDNESDAY', 'LUNCH', 3),
+(21, '2025-04-02 18:00:00.000000', NULL, '2025-04-02', 'WEDNESDAY', 'DINNER', 4),
+(22, '2025-04-03 10:00:00.000000', NULL, '2025-04-03', 'THURSDAY', 'BREAKFAST', 4),
+(23, '2025-04-03 12:00:00.000000', NULL, '2025-04-03', 'THURSDAY', 'LUNCH', 5),
+(24, '2025-04-03 18:00:00.000000', NULL, '2025-04-03', 'THURSDAY', 'DINNER', 6),
+(25, '2025-04-03 10:00:00.000000', NULL, '2025-04-03', 'THURSDAY', 'BREAKFAST', 1),
+(26, '2025-04-03 12:00:00.000000', NULL, '2025-04-03', 'THURSDAY', 'LUNCH', 2),
+(27, '2025-04-03 18:00:00.000000', NULL, '2025-04-03', 'THURSDAY', 'DINNER', 3),
+(28, '2025-04-03 10:00:00.000000', NULL, '2025-04-03', 'THURSDAY', 'BREAKFAST', 2),
+(29, '2025-04-03 12:00:00.000000', NULL, '2025-04-03', 'THURSDAY', 'LUNCH', 3),
+(30, '2025-04-03 18:00:00.000000', NULL, '2025-04-03', 'THURSDAY', 'DINNER', 4),
+(31, '2025-04-04 10:00:00.000000', NULL, '2025-04-04', 'FRIDAY', 'BREAKFAST', 1),
+(32, '2025-04-04 12:00:00.000000', NULL, '2025-04-04', 'FRIDAY', 'LUNCH', 2),
+(33, '2025-04-04 18:00:00.000000', NULL, '2025-04-04', 'FRIDAY', 'DINNER', 3),
+(34, '2025-04-04 10:00:00.000000', NULL, '2025-04-04', 'FRIDAY', 'BREAKFAST', 4),
+(35, '2025-04-04 12:00:00.000000', NULL, '2025-04-04', 'FRIDAY', 'LUNCH', 5),
+(36, '2025-04-04 18:00:00.000000', NULL, '2025-04-04', 'FRIDAY', 'DINNER', 6),
+(37, '2025-04-04 10:00:00.000000', NULL, '2025-04-04', 'FRIDAY', 'BREAKFAST', 2),
+(38, '2025-04-04 12:00:00.000000', NULL, '2025-04-04', 'FRIDAY', 'LUNCH', 3),
+(39, '2025-04-04 18:00:00.000000', NULL, '2025-04-04', 'FRIDAY', 'DINNER', 4),
+(40, '2025-04-05 10:00:00.000000', NULL, '2025-04-05', 'SATURDAY', 'BREAKFAST', 4),
+(41, '2025-04-05 12:00:00.000000', NULL, '2025-04-05', 'SATURDAY', 'LUNCH', 5),
+(42, '2025-04-05 18:00:00.000000', NULL, '2025-04-05', 'SATURDAY', 'DINNER', 6),
+(43, '2025-04-05 10:00:00.000000', NULL, '2025-04-05', 'SATURDAY', 'BREAKFAST', 1),
+(44, '2025-04-05 12:00:00.000000', NULL, '2025-04-05', 'SATURDAY', 'LUNCH', 2),
+(45, '2025-04-05 18:00:00.000000', NULL, '2025-04-05', 'SATURDAY', 'DINNER', 3);
+
+
+
+
+
+
+
+
+

@@ -1,23 +1,18 @@
-package com.example.pgbuddy.models;
+package com.example.pgbuddy.Dtos;
 
+import com.example.pgbuddy.models.Meal;
+import com.example.pgbuddy.models.MealDayType;
+import com.example.pgbuddy.models.MealTimeType;
 import jakarta.persistence.*;
 import lombok.Data;
+import lombok.Getter;
+import lombok.Setter;
 
 import java.util.Date;
 
-@Data
-@Entity
-@Table(name = "meal_votes")
-public class MealVote extends BaseModel {
-    /*
-    // 1 User can have only 1 MealVote
-    @OneToOne
-    @JoinColumn(name = "user_id")
-    private User user;
-    */
-
-    // Multiple MealVote can have same Meal -> M : 1
-    // in other words, 1 Meal can be part of Multiple MealVotes
+@Getter
+@Setter
+public class FoodDto {
     @ManyToOne
     @JoinColumn(name = "meal_id")
     private Meal meal;
