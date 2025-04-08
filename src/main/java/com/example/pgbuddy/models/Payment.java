@@ -19,4 +19,9 @@ public class Payment extends BaseModel {
     private PaymentStatus paymentStatus; // SUCCESS, FAILED, PROCESSING
 
     private String receiptUrl;
+
+    // Multiple Payments can be part of 1 Booking (M:1)
+    @ManyToOne
+    @JoinColumn(name = "booking_id")
+    private Booking booking;
 }
