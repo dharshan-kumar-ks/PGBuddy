@@ -24,4 +24,5 @@ public class UserController {
         UserDto user = userService.findUserById(id);
         return ResponseEntity.ok(user);
     }
+
 }

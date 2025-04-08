@@ -5,6 +5,8 @@ import lombok.Data;
 import lombok.Getter;
 import lombok.Setter;
 
+import java.util.Date;
+
 @Getter
 @Setter
 @Entity
@@ -30,4 +32,13 @@ public class User extends BaseModel {
     @JoinColumn(name = "room_id")
     private Room room;
 
+    @Enumerated(EnumType.STRING)
+    private GenderType gender;
+
+    private String bloodGroup;
+    private String address;
+    private String companyName;
+    private Date dateOfBirth; // Date of Birth
+
+    private String profilePicture; // URL or path to the profile picture
 }

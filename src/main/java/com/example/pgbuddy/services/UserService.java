@@ -22,16 +22,21 @@ public class UserService {
 
     // Helper method to map User entity to UserDto
     private UserDto mapToDTO(User user) {
-        UserDto userDto = new UserDto();
-        userDto.setId(user.getId());
-        userDto.setEmail(user.getEmail());
-        userDto.setName(user.getName());
-        if (user.getUserType() != null) {
-            userDto.setUserType(user.getUserType().name());
-        } else {
-            userDto.setUserType(null); // or set a default value if needed
-        }
-        return userDto;
+        return UserDto.builder()
+            .id(user.getId())
+            .email(user.getEmail())
+            .name(user.getName() != null ? user.getName() : "")
+            .phoneNumber(user.getPhoneNumber() != null ? user.getPhoneNumber() : "")
+            .gender(user.getGender() != null ? user.getGender().toString() : "")
+            .bloodGroup(user.getBloodGroup() != null ? user.getBloodGroup() : "")
+            .address(user.getAddress() != null ? user.getAddress() : "")
+            .companyName(user.getCompanyName() != null ? user.getCompanyName() : "")
+            .dateOfBirth(user.getDateOfBirth() != null
+                ? new java.text.SimpleDateFormat("yyyy-MM-dd").format(user.getDateOfBirth())
+                : "")
+            .profilePicture(user.getProfilePicture() != null ? user.getProfilePicture() : "")
+            .userType(user.getUserType() != null ? user.getUserType().name() : "")
+            .build();
     }
 
 }
