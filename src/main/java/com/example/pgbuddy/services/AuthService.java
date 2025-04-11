@@ -49,7 +49,7 @@ public class AuthService {
         // Validate user credentials -> return back the userId and JWT token to client (& a success flag)
         if (user.isPresent() && bCryptPasswordEncoder.matches(password, user.get().getPassword())) {
 
-            String token = jwtUtil.generateToken(email, String.valueOf(user.get().getUserType()));
+            String token = jwtUtil.generateToken(user.get().getId(), email, String.valueOf(user.get().getUserType()));
 
             SignInResponseDto response = new SignInResponseDto();
             response.setSuccess(true);
