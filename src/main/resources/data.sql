@@ -127,10 +127,25 @@ INSERT INTO meal_votes (id, created_at, last_modified_at, meal_date, meal_day_ty
 (45, '2025-04-05 18:00:00.000000', NULL, '2025-04-05', 'SATURDAY', 'DINNER', 3);
 
 
+INSERT INTO cafe_menu (id, created_at, last_modified_at, description, image_url, is_available, is_non_veg, is_spicy, name, price, total_orders) VALUES
+(2, NOW(), NOW(), 'Beaten eggs, served plain or with filling.', '/meals-1.jpg', true, true, false, 'Omelette', 39, 0),
+(3, NOW(), NOW(), 'Spicy chicken with garlic noodles.', '/meals-1.jpg', true, true, true, 'Chilli Chicken & Noodles', 135, 0),
+(4, NOW(), NOW(), 'Garlic-flavored noodles with vegetables.', '/meals-1.jpg', true, false, false, 'Veg Garlic Noodles', 40, 0),
+(5, NOW(), NOW(), 'Fluffy pancakes served with syrup.', '/meals-2.jpg', true, false, false, 'Pancakes', 50, 0),
+(6, NOW(), NOW(), 'Grilled sandwich with cheese and vegetables.', '/meals-2.jpg', true, false, false, 'Grilled Sandwich', 60, 0),
+(7, NOW(), NOW(), 'Creamy butter chicken served with naan.', '/meals-3.jpg', true, true, true, 'Butter Chicken', 150, 0),
+(8, NOW(), NOW(), 'Aromatic rice with mixed vegetables.', '/meals-3.jpg', true, false, false, 'Veg Biryani', 120, 0),
+(9, NOW(), NOW(), 'Spiced rice with tender chicken pieces.', '/meals-4.jpg', true, true, true, 'Chicken Biryani', 140, 0),
+(10, NOW(), NOW(), 'Fresh lettuce with Caesar dressing.', '/meals-4.jpg', true, false, false, 'Caesar Salad', 80, 0),
+(11, NOW(), NOW(), 'Classic pizza with cheese and tomato.', '/meals-5.jpg', true, false, false, 'Margarita Pizza', 100, 0),
+(12, NOW(), NOW(), 'Pizza topped with pepperoni slices.', '/meals-5.jpg', true, true, true, 'Pepperoni Pizza', 120, 0),
+(13, NOW(), NOW(), 'Burger with vegetable patty and cheese.', '/meals-6.jpg', true, false, false, 'Veg Burger', 70, 0),
+(14, NOW(), NOW(), 'Burger with chicken patty and cheese.', '/meals-6.jpg', true, true, true, 'Chicken Burger', 90, 0),
+(15, NOW(), NOW(), 'Crispy golden French fries.', '/meals-7.jpg', true, false, false, 'French Fries', 40, 0),
+(16, NOW(), NOW(), 'Rich chocolate brownie with nuts.', '/meals-7.jpg', true, false, false, 'Chocolate Brownie', 60, 0);
 
 
+SHOW INDEX FROM cafe_order_items;
 
-
-
-
+DROP TABLE cafe_order_items
 
