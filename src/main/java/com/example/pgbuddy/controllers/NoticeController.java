@@ -2,6 +2,7 @@ package com.example.pgbuddy.controllers;
 
 import com.example.pgbuddy.Dtos.NoticeDto;
 import com.example.pgbuddy.Dtos.UserDto;
+import com.example.pgbuddy.JwtUtil;
 import com.example.pgbuddy.services.NoticeService;
 import com.example.pgbuddy.services.UserService;
 import org.springframework.http.ResponseEntity;
@@ -14,9 +15,11 @@ import java.util.List;
 //@CrossOrigin(origins = "http://localhost:5173") // Allow requests from React
 public class NoticeController {
     private final NoticeService noticeService;
+    private final JwtUtil jwtUtil;
 
-    public NoticeController(NoticeService noticeService) {
+    public NoticeController(NoticeService noticeService, JwtUtil jwtUtil) {
         this.noticeService = noticeService;
+        this.jwtUtil = jwtUtil;
     }
 
     // This method is responsible for handling HTTP GET requests to retrieve all notices
@@ -39,14 +42,18 @@ public class NoticeController {
         return ResponseEntity.ok().build();
     }
 
-    /*
-    // Get user by ID (for Roommate Finder or profile view)
-    @GetMapping("/{id}")
-    public ResponseEntity<NoticeDto> getUserById(@PathVariable Long id) {
-        NoticeDto notice = noticeService.findUserById(id);
-        return ResponseEntity.ok(user);
+    // POST method to create a new notice & store in DB
+    @PostMapping("/publish")
+    public ResponseEntity<NoticeDto> createNotice(@RequestHeader("Authorization") String token, @RequestBody NoticeRequestDto noticeRequestDto) {
+        // Extract userId from the token
+        Long userId = jwtUtil.extractUserId(token.substring(7)); // Remove "Bearer " prefix
+
+        // Call the service to create a new notice
+        NoticeDto createdNotice = noticeService.createNotice(noticeRequestDto, userId);
+        // Return the created notice with HTTP status 201 Created
+        return ResponseEntity.status(201).body(createdNotice);
     }
-    */
+
 
 }
 

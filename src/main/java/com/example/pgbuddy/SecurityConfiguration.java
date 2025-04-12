@@ -46,7 +46,7 @@ public class SecurityConfiguration {
               .csrf(csrf -> csrf.disable())
               .authorizeHttpRequests(auth -> auth
               .requestMatchers("/api/signin", "/api/signup").permitAll() // Public endpoints (can access without any authentication)
-              .requestMatchers("/api/notices").hasRole("RESIDENT") // Restrict access to users with the RESIDENT role
+              //.requestMatchers("/api/notices").hasRole("RESIDENT") // Restrict access to users with the RESIDENT role
               .anyRequest().authenticated() // All other endpoints require authentication
           )
           .addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class);
