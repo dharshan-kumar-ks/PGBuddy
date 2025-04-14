@@ -10,6 +10,10 @@ import java.util.Map;
 public class CustomHandshakeHandler extends DefaultHandshakeHandler {
     @Override
     protected Principal determineUser(ServerHttpRequest request, WebSocketHandler wsHandler, Map<String, Object> attributes) {
+        String email = (String) attributes.get("email");
+        if (email != null) {
+            return () -> email; // Use email as Principal
+        }
         Long userId = (Long) attributes.get("userId");
         return () -> userId != null ? userId.toString() : "anonymous";
     }
