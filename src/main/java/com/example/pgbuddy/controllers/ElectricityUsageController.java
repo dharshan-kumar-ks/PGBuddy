@@ -1,7 +1,7 @@
 package com.example.pgbuddy.controllers;
 
 import com.example.pgbuddy.Dtos.ElectricityUsageDto;
-import com.example.pgbuddy.JwtUtil;
+import com.example.pgbuddy.utils.JwtUtil;
 import com.example.pgbuddy.services.ElectricityUsageService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;

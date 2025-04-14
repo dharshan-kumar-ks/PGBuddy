@@ -12,5 +12,6 @@ import lombok.Setter;
 public class SignInResponseDto {
     private boolean success;
     private Long userId;
+    private String userRole;
     private String token;
 }

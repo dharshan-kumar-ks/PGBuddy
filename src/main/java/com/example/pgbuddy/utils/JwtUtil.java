@@ -1,4 +1,4 @@
-package com.example.pgbuddy;
+package com.example.pgbuddy.utils;
 
 import io.jsonwebtoken.*;
 import org.springframework.stereotype.Component;

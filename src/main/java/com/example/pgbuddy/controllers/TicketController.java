@@ -41,4 +41,11 @@ public class TicketController {
         return ResponseEntity.ok(tickets);
     }
 
+    // GET Method to retrieve all tickets (for all users)
+    @GetMapping("/all")
+    public ResponseEntity<List<TicketDto>> getAllTickets() {
+        List<TicketDto> tickets = ticketService.getAllTickets();
+        return ResponseEntity.ok(tickets);
+    }
+
 }

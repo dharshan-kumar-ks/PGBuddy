@@ -85,4 +85,13 @@ public class TicketService {
         }
         return tickets.stream().map(this::mapToDto).toList();
     }
+
+    // GET Method to retrieve all tickets (for all users)
+    public List<TicketDto> getAllTickets() {
+        List<Ticket> tickets = ticketRepository.findAll();
+        if (tickets.isEmpty()) {
+            throw new ResourceNotFoundException("No tickets found");
+        }
+        return tickets.stream().map(this::mapToDto).toList();
+    }
 }

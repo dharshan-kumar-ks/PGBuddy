@@ -46,6 +46,8 @@ public class SecurityConfiguration {
               .csrf(csrf -> csrf.disable())
               .authorizeHttpRequests(auth -> auth
               .requestMatchers("/api/signin", "/api/signup").permitAll() // Public endpoints (can access without any authentication)
+              .requestMatchers("/ws/**").permitAll() // Allow WebSocket connections
+              .requestMatchers("/ws").permitAll()
               //.requestMatchers("/api/notices").hasRole("RESIDENT") // Restrict access to users with the RESIDENT role
               .anyRequest().authenticated() // All other endpoints require authentication
           )
@@ -60,7 +62,7 @@ public class SecurityConfiguration {
         CorsConfiguration config = new CorsConfiguration();
         config.setAllowCredentials(true);
         config.setAllowedOrigins(Arrays.asList("http://localhost:5173"));
-        config.setAllowedHeaders(Arrays.asList("Origin", "Content-Type", "Accept", "Authorization"));
+        config.setAllowedHeaders(Arrays.asList("Origin", "Content-Type", "Accept", "Authorization", "Upgrade", "Connection"));
         config.setAllowedMethods(Arrays.asList("GET", "POST", "PUT", "DELETE", "OPTIONS"));
         source.registerCorsConfiguration("/**", config);
         return new CorsFilter(source);

@@ -1,10 +1,8 @@
 package com.example.pgbuddy.controllers;
 
 import com.example.pgbuddy.Dtos.NoticeDto;
-import com.example.pgbuddy.Dtos.UserDto;
-import com.example.pgbuddy.JwtUtil;
+import com.example.pgbuddy.utils.JwtUtil;
 import com.example.pgbuddy.services.NoticeService;
-import com.example.pgbuddy.services.UserService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 

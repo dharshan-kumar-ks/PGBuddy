@@ -2,7 +2,7 @@ package com.example.pgbuddy.controllers;
 
 import com.example.pgbuddy.Dtos.CafeOrderRequestDto;
 import com.example.pgbuddy.Dtos.CafeOrderResponseDto;
-import com.example.pgbuddy.JwtUtil;
+import com.example.pgbuddy.utils.JwtUtil;
 import com.example.pgbuddy.models.CafeMenu;
 import com.example.pgbuddy.services.CafeService;
 import org.springframework.http.HttpStatus;

@@ -19,3 +19,4 @@ public class TicketDto {
     private String status = "PENDING";  // Default status
     private LocalDateTime createdAt;
 }
+// TODO: add category to this DTO

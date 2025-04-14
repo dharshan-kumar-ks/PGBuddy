@@ -1,5 +1,5 @@
 package com.example.pgbuddy.filters;
-import com.example.pgbuddy.JwtUtil;
+import com.example.pgbuddy.utils.JwtUtil;
 import jakarta.servlet.*;
 import jakarta.servlet.http.*;
 import org.springframework.beans.factory.annotation.Autowired;

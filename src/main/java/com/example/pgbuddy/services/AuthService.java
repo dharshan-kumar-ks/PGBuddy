@@ -1,7 +1,7 @@
 package com.example.pgbuddy.services;
 
 import com.example.pgbuddy.Dtos.SignInResponseDto;
-import com.example.pgbuddy.JwtUtil;
+import com.example.pgbuddy.utils.JwtUtil;
 import com.example.pgbuddy.models.*;
 import com.example.pgbuddy.repositories.UserRepository;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -54,18 +54,12 @@ public class AuthService {
             SignInResponseDto response = new SignInResponseDto();
             response.setSuccess(true);
             response.setUserId(user.get().getId());
+            response.setUserRole(String.valueOf(user.get().getUserType()));
             response.setToken(token);
             return response;
         }
-        return new SignInResponseDto(false, null, null);
+        return new SignInResponseDto(false, null, null, null);
 
-        /*
-        Optional<User> user = userRepository.findByEmail(email);
-        if (user.isPresent() && user.get().getPassword().equals(password)) {
-            return new SignInResponseDto(true, user.get().getId());
-        }
-        return new SignInResponseDto(false, null);
-         */
     }
 
 }
