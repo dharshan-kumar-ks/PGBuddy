@@ -35,14 +35,7 @@ public class WebSocketConfig implements WebSocketMessageBrokerConfigurer {
         logger.info("Registering STOMP endpoint: /chat with allowed origin http://localhost:5173");
         registry.addEndpoint("/chat")
                 .setAllowedOrigins("http://localhost:5173")
-                .setHandshakeHandler(new DefaultHandshakeHandler() {
-                   @Override
-                   protected Principal determineUser(ServerHttpRequest request, WebSocketHandler wsHandler, Map<String, Object> attributes) {
-                       String clientIp = ((ServletServerHttpRequest) request).getServletRequest().getRemoteAddr();
-                       //logger.info("WebSocket handshake attempt from IP: {}", clientIp);
-                       return super.determineUser(request, wsHandler, attributes);
-                   }
-                })
+                .setHandshakeHandler(new CustomHandshakeHandler()) // Use custom handshake handler
                 .withSockJS();
     }
 }
