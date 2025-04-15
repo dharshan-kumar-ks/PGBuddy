@@ -1,12 +1,15 @@
 package com.example.pgbuddy.Dtos;
 
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
 
-@Getter
-@Setter
+import java.util.Date;
+
+@NoArgsConstructor
+@AllArgsConstructor
+@Data
 public class ChatMessageDto {
     private String sender;
+    private String recipient;
     private String content;
-    private String type; // JOIN, LEAVE, CHAT
+    private String timestamp;
 }
