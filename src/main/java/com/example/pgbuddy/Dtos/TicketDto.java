@@ -14,7 +14,7 @@ public class TicketDto {
     private String description;
     private String priority;
     private String ticketType;
-    //private String category;
+    private String category;
     private Long assignedTo; // Can be null if not immediately assigned
     private String status = "PENDING";  // Default status
     private LocalDateTime createdAt;
