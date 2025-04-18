@@ -32,4 +32,22 @@ public class BookingController {
         List<PaymentTransactionDto> transactions = bookingService.getPaymentTransactions(userId);
         return new ResponseEntity<>(transactions, HttpStatus.OK);
     }
+
+    // POST method to pay rent
+    @PostMapping("/pay")
+    public ResponseEntity<PaymentTransactionDto> payRent(@RequestBody PaymentTransactionDto paymentTransactionDto) {
+        PaymentTransactionDto response = bookingService.payRent(paymentTransactionDto);
+        return new ResponseEntity<>(response, HttpStatus.OK);
+    }
+
+    /*
+    // POST method to cancel booking
+    @PostMapping("/cancel/{id}")
+    public ResponseEntity<String> cancelBooking(@PathVariable("id") Long userId) {
+        String response = bookingService.cancelBooking(userId);
+        return new ResponseEntity<>(response, HttpStatus.OK);
+    }
+    */
+
 }
+
