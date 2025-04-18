@@ -14,15 +14,18 @@ import org.springframework.stereotype.Service;
 import java.time.LocalDateTime;
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
 
 @Service
 public class BookingService {
     private final BookingRepository bookingRepository;
     private final PaymentRepository paymentRepository;
+    private final RazorpayService razorpayService;
 
-    public BookingService(BookingRepository bookingRepository, PaymentRepository paymentRepository) {
+    public BookingService(BookingRepository bookingRepository, PaymentRepository paymentRepository, RazorpayService razorpayService) {
         this.bookingRepository = bookingRepository;
         this.paymentRepository = paymentRepository;
+        this.razorpayService = razorpayService;
     }
 
     // GET method to get booking details for the user
@@ -79,31 +82,67 @@ public class BookingService {
             throw new ResourceNotFoundException("Booking not found for userId: " + paymentTransactionDto.getUserId());
         }
 
-        // Create a new Payment object and set its properties
-        Payment payment = new Payment();
-        payment.setUser(booking.getUser());
-        payment.setAmount(paymentTransactionDto.getAmount());
-        payment.setPaymentStatus(PaymentStatus.SUCCESS); // Assuming payment is successful
-        payment.setCreatedAt(LocalDateTime.now());
-        payment.setBooking(booking);
-        // Save the payment to the database
-        payment = paymentRepository.save(payment);
+        try {
+            // Generate Razorpay order
+            String receipt = "receipt_" + System.currentTimeMillis();
+            // Method to create an order (via Razorpay API) & return the order ID
+            String orderId = razorpayService.createOrder(paymentTransactionDto.getAmount(), "INR", receipt);
 
-        // Add the payment to the booking
-        booking.getPayments().add(payment);
-        booking.setTotalAmountPaidTillDate(booking.getTotalAmountPaidTillDate() + payment.getAmount());
-        booking.setDuesRemaining(booking.getDuesRemaining() - payment.getAmount());
+            // Create a new Payment object with PROCESSING status
+            Payment payment = new Payment();
+            payment.setUser(booking.getUser());
+            payment.setAmount(paymentTransactionDto.getAmount());
+            payment.setPaymentStatus(PaymentStatus.PROCESSING); // Set status as PROCESSING
+            payment.setCreatedAt(LocalDateTime.now());
+            payment.setBooking(booking);
+            payment.setRazorpayOrderId(orderId); // Save Razorpay order ID
 
-        // Save the updated booking
-        bookingRepository.save(booking);
+            // Save the payment to the database
+            payment = paymentRepository.save(payment);
 
-        // Convert Payment entity to PaymentTransactionDto & return it
-        paymentTransactionDto.setTransactionId(payment.getId().toString());
-        paymentTransactionDto.setTransactionDate(payment.getCreatedAt().toString());
-        paymentTransactionDto.setPaymentStatus(payment.getPaymentStatus().toString());
-        //paymentTransactionDto.setUserId(payment.getUser().getId());
-        return paymentTransactionDto;
+            // Add the payment to the booking
+            booking.getPayments().add(payment);
+            bookingRepository.save(booking);
+
+            // Return the Razorpay order ID and other details to the frontend
+            paymentTransactionDto.setTransactionId(orderId);
+            paymentTransactionDto.setPaymentStatus(payment.getPaymentStatus().toString());
+            return paymentTransactionDto;
+
+        } catch (Exception e) {
+            throw new RuntimeException("Failed to create Razorpay order", e);
+        }
     }
+
+    // POST method to verify the payment signature sent by Razorpay
+    public void verifyAndProcessPayment(String razorpayOrderId, String razorpayPaymentId, String razorpaySignature) {
+        // Log the values for debugging
+        //System.out.println("Razorpay Order ID: " + razorpayOrderId);
+        //System.out.println("Razorpay Payment ID: " + razorpayPaymentId);
+        //System.out.println("Razorpay Signature: " + razorpaySignature);
+
+        // Verify the payment signature
+        boolean isValid = razorpayService.verifyPaymentSignature(razorpayOrderId, razorpayPaymentId, razorpaySignature);
+        Payment payment = paymentRepository.findByRazorpayOrderId(razorpayOrderId);
+        if (!isValid) {
+            // Update payment status to FAILED if the signature is invalid
+            if (payment != null) {
+                payment.setPaymentStatus(PaymentStatus.FAILED);
+                paymentRepository.save(payment);
+            }
+            throw new RuntimeException("Payment verification failed");
+        }
+
+        // Update payment status to SUCCESS in the database
+        if (payment != null) {
+            payment.setPaymentStatus(PaymentStatus.SUCCESS);
+            paymentRepository.save(payment);
+        } else {
+            // Handle the case where payment is not found
+            throw new RuntimeException("Payment not found for Razorpay order ID: " + razorpayOrderId);
+        }
+    }
+
 }
 
 

@@ -147,7 +147,7 @@ INSERT INTO cafe_menu (id, created_at, last_modified_at, description, image_url,
 
 SHOW INDEX FROM cafe_order_items;
 
-DROP TABLE chat_messages;
-DROP TABLE tickets;
+DROP TABLE bookings_payments;
+DROP TABLE payments;
 
 

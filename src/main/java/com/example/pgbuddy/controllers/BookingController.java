@@ -8,6 +8,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequestMapping("/api/booking")
@@ -39,6 +40,26 @@ public class BookingController {
         PaymentTransactionDto response = bookingService.payRent(paymentTransactionDto);
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
+
+    // POST method to verify the payment signature sent by Razorpay
+    @PostMapping("/payment-success")
+    public ResponseEntity<String> handlePaymentSuccess(@RequestBody Map<String, String> paymentDetails) {
+        String razorpayOrderId = paymentDetails.get("razorpay_order_id");
+        String razorpayPaymentId = paymentDetails.get("razorpay_payment_id");
+        String razorpaySignature = paymentDetails.get("razorpay_signature");
+        // Log the values for debugging
+        //System.out.println("Razorpay Order ID: " + razorpayOrderId);
+        //System.out.println("Razorpay Payment ID: " + razorpayPaymentId);
+        //System.out.println("Razorpay Signature: " + razorpaySignature);
+
+        try {
+            bookingService.verifyAndProcessPayment(razorpayOrderId, razorpayPaymentId, razorpaySignature);
+            return new ResponseEntity<>("Payment successful", HttpStatus.OK);
+        } catch (Exception e) {
+            return new ResponseEntity<>("Payment verification failed", HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
 
     /*
     // POST method to cancel booking
