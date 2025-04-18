@@ -12,4 +12,5 @@ public class ChatMessageDto {
     private String recipient;
     private String content;
     private String timestamp;
+    private Long ticketId;
 }

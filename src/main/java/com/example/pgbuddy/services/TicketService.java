@@ -23,7 +23,7 @@ public class TicketService {
 
     // Logic to get the ticket by ID
     public TicketDto getTicketById(Long id) {
-        Ticket ticket = ticketRepository.findById(Math.toIntExact(id))
+        Ticket ticket = ticketRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("Ticket not found"));
         return mapToDto(ticket);
     }

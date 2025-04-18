@@ -6,7 +6,7 @@ import org.springframework.data.repository.CrudRepository;
 
 import java.util.List;
 
-public interface TicketRepository extends JpaRepository<Ticket, Integer> {
+public interface TicketRepository extends JpaRepository<Ticket, Long> {
 
     List<Ticket> findByUserId(Long userId);
 }
