@@ -7,6 +7,7 @@ import lombok.Data;
 
 @Data
 public class InternetDeviceAddOnDto {
+    private int packId;
     private Long devices;
     private Long price;
     private int validity;

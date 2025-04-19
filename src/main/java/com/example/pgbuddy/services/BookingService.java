@@ -100,6 +100,9 @@ public class BookingService {
             // Save the payment to the database
             payment = paymentRepository.save(payment);
 
+            // Update the booking with the payment details
+            booking.setTotalAmountPaidTillDate(booking.getTotalAmountPaidTillDate() + payment.getAmount());
+            booking.setDuesRemaining(booking.getDuesRemaining() - payment.getAmount());
             // Add the payment to the booking
             booking.getPayments().add(payment);
             bookingRepository.save(booking);
