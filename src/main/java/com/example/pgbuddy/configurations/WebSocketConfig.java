@@ -2,6 +2,7 @@ package com.example.pgbuddy.configurations;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.server.ServerHttpRequest;
 import org.springframework.http.server.ServletServerHttpRequest;
@@ -22,6 +23,11 @@ public class WebSocketConfig implements WebSocketMessageBrokerConfigurer {
 
     private static final Logger logger = LoggerFactory.getLogger(WebSocketConfig.class);
 
+    @Bean
+    public CustomHandshakeHandler customHandshakeHandler() {
+        return new CustomHandshakeHandler();
+    }
+
     @Override
     public void configureMessageBroker(MessageBrokerRegistry config) {
         config.enableSimpleBroker("/topic", "/queue");
@@ -35,7 +41,7 @@ public class WebSocketConfig implements WebSocketMessageBrokerConfigurer {
         logger.info("Registering STOMP endpoint: /chat with allowed origin http://localhost:5173");
         registry.addEndpoint("/chat")
                 .setAllowedOrigins("http://localhost:5173")
-                .setHandshakeHandler(new CustomHandshakeHandler()) // Use custom handshake handler
+                .setHandshakeHandler(customHandshakeHandler()) // Use custom handshake handler
                 .withSockJS();
     }
 }

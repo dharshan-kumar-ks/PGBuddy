@@ -47,12 +47,13 @@ public class SecurityConfiguration {
               .authorizeHttpRequests(auth -> auth
               .requestMatchers("/api/signin", "/api/signup").permitAll() // Public endpoints (can access without any authentication)
               .requestMatchers("/ws/**").permitAll() // Allow WebSocket connections
+              .requestMatchers("/chat/**").permitAll()
               //.requestMatchers("/ws").permitAll()
               //.requestMatchers("/api/notices").hasRole("RESIDENT") // Restrict access to users with the RESIDENT role
-              //.anyRequest().authenticated() // All other endpoints require authentication
-              .anyRequest().permitAll() // Allow all requests for now
-          );
-          //.addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class);
+              .anyRequest().authenticated() // All other endpoints require authentication
+              //.anyRequest().permitAll() // Allow all requests for now
+          )
+          .addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class);
         return http.build();
     }
 
