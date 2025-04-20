@@ -23,8 +23,8 @@ public class ChatMessageHistoryService {
         // Convert to DTOs
         List<ChatMessageDto> chatMessageDtos = chatMessages.stream()
                 .map(chatMessage -> new ChatMessageDto(
-                        chatMessage.getSender().getName(),
-                        chatMessage.getRecipient().getName(),
+                        chatMessage.getSender().getId(),
+                        chatMessage.getRecipient().getId(),
                         chatMessage.getContent(),
                         chatMessage.getCreatedAt().toString(),
                         chatMessage.getTicket().getId()))

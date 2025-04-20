@@ -35,9 +35,9 @@ public class ChatController {
 
         // Save the message to the database
         ChatMessage chatMessage = new ChatMessage();
-        User sender = userRepository.findByName(chatMessageDto.getSender());
+        User sender = userRepository.findById(chatMessageDto.getSender()).orElse(null);
         chatMessage.setSender(sender);
-        User recipient = userRepository.findByName(chatMessageDto.getRecipient());
+        User recipient = userRepository.findById(chatMessageDto.getRecipient()).orElse(null);
         chatMessage.setRecipient(recipient);
         chatMessage.setContent(chatMessageDto.getContent());
         chatMessage.setCreatedAt(LocalDateTime.now());
@@ -47,14 +47,14 @@ public class ChatController {
 
         // Send message to recipient
         messagingTemplate.convertAndSendToUser(
-                chatMessageDto.getRecipient(),
+                String.valueOf(chatMessageDto.getRecipient()),
                 "/queue/messages",
                 chatMessageDto
         );
 
         // Send message back to sender
         messagingTemplate.convertAndSendToUser(
-                chatMessageDto.getSender(),
+                String.valueOf(chatMessageDto.getSender()),
                 "/queue/messages",
                 chatMessageDto
         );

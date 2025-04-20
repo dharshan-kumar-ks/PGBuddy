@@ -30,25 +30,14 @@ public class CustomHandshakeHandler extends DefaultHandshakeHandler {
             String token = servletRequest.getServletRequest().getParameter("token"); // Extract token from query parameter
             System.out.println("CustomHandshakeHandler is being executed");
             logger.info(">>> Token from query parameter: {}", token);
-            if (token == null) {
-                token = servletRequest.getServletRequest().getHeader("Authorization"); // Or from headers
-                if (token != null && token.startsWith("Bearer ")) {
-                    token = token.substring(7); // Remove "Bearer " prefix
-                }
-            }
 
             if (token != null && jwtUtil.validateToken(token)) {
                 Long userId = jwtUtil.extractUserId(token); // Extract userId from token
-                // Extract username from userRepo Layer
-                String username = userRepository.findById(userId)
-                        .map(user -> user.getName()) // Assuming your User entity has a getUsername() method
-                        .orElse(null); // Handle the case where the user is not found
-
-                if (username != null) {
-                    logger.info("Associating WebSocket session with username: {}", username);
-                    return () -> username; // Return a Principal with the username
+                if (userRepository.existsById(userId)) { // Ensure user exists
+                    logger.info("Associating WebSocket session with userId: {}", userId);
+                    return () -> String.valueOf(userId); // Return a Principal with the userId
                 } else {
-                    logger.warn("Failed to extract username from token");
+                    logger.warn("User not found for userId: {}", userId);
                 }
             } else {
                 logger.warn("Invalid or missing JWT token");

@@ -8,8 +8,8 @@ import java.util.Date;
 @AllArgsConstructor
 @Data
 public class ChatMessageDto {
-    private String sender;
-    private String recipient;
+    private Long sender;
+    private Long recipient;
     private String content;
     private String timestamp;
     private Long ticketId;

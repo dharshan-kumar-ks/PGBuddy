@@ -48,17 +48,26 @@ public class InternetUsageController {
         return ResponseEntity.ok(addOnOptions);
     }
 
-    // POST method to update internet usage data
-//    @PostMapping("/update/data")
-//    public ResponseEntity<Void> updateInternetUsage(@RequestHeader("Authorization") String token,
-//                                                     @RequestBody InternetDataAddOnDto) {
-//        // Extract userId from the token
-//        Long userId = jwtUtil.extractUserId(token.substring(7)); // Remove "Bearer " prefix
-//
-//        // Call the service to update internet usage data
-//        internetUsageService.updateInternetUsage(userId, internetUsageDto);
-//        return ResponseEntity.ok().build();
-//    }
+    // POST method to update internet usage data based on the selected data add-on
+    @PostMapping("/update/data/{id}")
+    public ResponseEntity<String> updateInternetUsage(@RequestHeader("Authorization") String token,
+                                                     @PathVariable Long id) {
+        // Extract userId from the token
+        Long userId = jwtUtil.extractUserId(token.substring(7)); // Remove "Bearer " prefix
+        // Call the service to update internet usage data
+        internetUsageService.updateInternetUsageForData(userId, id);
+        return ResponseEntity.ok("Recharge successful");
+    }
 
+    // POST method to update internet usage data based on the selected device add-on
+    @PostMapping("/update/device/{id}")
+    public ResponseEntity<String> updateInternetDevice(@RequestHeader("Authorization") String token,
+                                                       @PathVariable Long id) {
+        // Extract userId from the token
+        Long userId = jwtUtil.extractUserId(token.substring(7)); // Remove "Bearer " prefix
+        // Call the service to update internet usage data
+        internetUsageService.updateInternetUsageForDevice(userId, id);
+        return ResponseEntity.ok("Recharge successful");
+    }
 
 }
