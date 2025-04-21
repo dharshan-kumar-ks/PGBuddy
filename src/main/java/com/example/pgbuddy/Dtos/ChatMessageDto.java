@@ -1,14 +1,16 @@
 package com.example.pgbuddy.Dtos;
 
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
 
-@Getter
-@Setter
+import java.util.Date;
+
+@NoArgsConstructor
+@AllArgsConstructor
+@Data
 public class ChatMessageDto {
-    private String sender;    // Sender's username
-    private String receiver;  // Receiver's username
-    //private String senderType; // Resident or Admin
-    private String content; // Message content
-    private String timestamp; // Timestamp of the message
+    private Long sender;
+    private Long recipient;
+    private String content;
+    private String timestamp;
+    private Long ticketId;
 }

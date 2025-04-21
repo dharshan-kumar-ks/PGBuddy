@@ -147,5 +147,7 @@ INSERT INTO cafe_menu (id, created_at, last_modified_at, description, image_url,
 
 SHOW INDEX FROM cafe_order_items;
 
-DROP TABLE internet_device_addon;
+DROP TABLE bookings_payments;
+DROP TABLE payments;
+
 

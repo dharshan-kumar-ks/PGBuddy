@@ -2,6 +2,7 @@ package com.example.pgbuddy.services;
 
 import com.example.pgbuddy.Dtos.*;
 import com.example.pgbuddy.models.*;
+import com.example.pgbuddy.repositories.BookingRepository;
 import com.example.pgbuddy.repositories.InternetDataAddOnRepository;
 import com.example.pgbuddy.repositories.InternetDeviceAddOnRepository;
 import com.example.pgbuddy.repositories.InternetUsageRepository;
@@ -14,13 +15,16 @@ public class InternetUsageService {
     private final InternetUsageRepository internetUsageRepository;
     private final InternetDataAddOnRepository internetDataAddOnRepository;
     private final InternetDeviceAddOnRepository internetDeviceAddOnRepository;
+    private final BookingRepository bookingRepository;
 
     public InternetUsageService(InternetUsageRepository internetUsageRepository,
                                  InternetDataAddOnRepository internetDataAddOnRepository,
-                                 InternetDeviceAddOnRepository internetDeviceAddOnRepository) {
+                                 InternetDeviceAddOnRepository internetDeviceAddOnRepository,
+                                BookingRepository bookingRepository) {
         this.internetUsageRepository = internetUsageRepository;
         this.internetDataAddOnRepository = internetDataAddOnRepository;
         this.internetDeviceAddOnRepository = internetDeviceAddOnRepository;
+        this.bookingRepository = bookingRepository;
     }
 
     // GET method to fetch internet usage data (for the specific user)
@@ -53,6 +57,7 @@ public class InternetUsageService {
         // map InternetDataAddOn to InternetDataAddOnDto
         List<InternetDataAddOnDto> dataAddOnDtos = dataAddOns.stream().map(dataAddOn -> {
             InternetDataAddOnDto dto = new InternetDataAddOnDto();
+            dto.setPackId(Math.toIntExact(dataAddOn.getId()));
             dto.setData(dataAddOn.getData());
             dto.setPrice(dataAddOn.getPrice());
             dto.setValidity(dataAddOn.getValidity());
@@ -72,6 +77,7 @@ public class InternetUsageService {
         // map InternetDeviceAddOn to InternetDeviceAddOnDto
         List<InternetDeviceAddOnDto> deviceAddOnDtos = deviceAddOns.stream().map(deviceAddOn -> {
             InternetDeviceAddOnDto dto = new InternetDeviceAddOnDto();
+            dto.setPackId(Math.toIntExact(deviceAddOn.getId()));
             dto.setDevices(deviceAddOn.getDevices());
             dto.setPrice(deviceAddOn.getPrice());
             dto.setValidity(deviceAddOn.getValidity());
@@ -80,5 +86,54 @@ public class InternetUsageService {
         }).toList();
 
         return deviceAddOnDtos;
+    }
+
+    // POST method to update internet usage data based on the selected data add-on
+    public void updateInternetUsageForData(Long userId, Long id) {
+        // Get the appropriate InternetDataAddOn object from the repository using it id
+        InternetDataAddOn dataAddOn = internetDataAddOnRepository.findById(Math.toIntExact(id))
+                .orElseThrow(() -> new RuntimeException("Internet data add-on not found for ID: " + id));
+
+        // Get the InternetUsage object from the repository for the userId
+        InternetUsage internetUsage = internetUsageRepository.findByUserId(userId)
+                .orElseThrow(() -> new RuntimeException("Internet usage not found for user ID: " + userId));
+
+        // Update the InternetUsage object with the new data add-on values
+        internetUsage.setTotalDataGb(internetUsage.getTotalDataGb() + dataAddOn.getData());
+        internetUsage.setDataLeftGb(internetUsage.getDataLeftGb() + dataAddOn.getData());
+
+        // Update bookings object with the increased duesRemaining
+        Booking booking = bookingRepository.findByUserId(userId);
+        if (booking == null) { throw new RuntimeException("Booking not found for user ID: " + userId); }
+        booking.setDuesRemaining(booking.getDuesRemaining() + dataAddOn.getPrice());
+        bookingRepository.save(booking);
+
+        // Save the updated InternetUsage object back to the repository
+        internetUsageRepository.save(internetUsage);
+        return;
+    }
+
+    // POST method to update internet usage data based on the selected device add-on
+    public void updateInternetUsageForDevice(Long userId, Long id) {
+        // Get the appropriate InternetDeviceAddOn object from the repository using it id
+        InternetDeviceAddOn deviceAddOn = internetDeviceAddOnRepository.findById(Math.toIntExact(id))
+                .orElseThrow(() -> new RuntimeException("Internet device add-on not found for ID: " + id));
+
+        // Get the InternetUsage object from the repository for the userId
+        InternetUsage internetUsage = internetUsageRepository.findByUserId(userId)
+                .orElseThrow(() -> new RuntimeException("Internet usage not found for user ID: " + userId));
+
+        // Update the InternetUsage object with the new device add-on values
+        internetUsage.setMaxDevices((int) (internetUsage.getMaxDevices() + deviceAddOn.getDevices()));
+
+        // Update bookings object with the increased duesRemaining
+        Booking booking = bookingRepository.findByUserId(userId);
+        if (booking == null) { throw new RuntimeException("Booking not found for user ID: " + userId); }
+        booking.setDuesRemaining(booking.getDuesRemaining() + deviceAddOn.getPrice());
+        bookingRepository.save(booking);
+
+        // Save the updated InternetUsage object back to the repository
+        internetUsageRepository.save(internetUsage);
+        return;
     }
 }

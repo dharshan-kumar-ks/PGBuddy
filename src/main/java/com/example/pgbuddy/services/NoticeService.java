@@ -1,7 +1,7 @@
 package com.example.pgbuddy.services;
 
 import com.example.pgbuddy.Dtos.NoticeDto;
-import com.example.pgbuddy.controllers.NoticeRequestDto;
+import com.example.pgbuddy.Dtos.NoticeRequestDto;
 import com.example.pgbuddy.models.Notice;
 import com.example.pgbuddy.models.User;
 import com.example.pgbuddy.repositories.NoticeRepository;
@@ -22,7 +22,7 @@ public class NoticeService {
         this.userRepository = userRepository;
     }
 
-    public List<NoticeDto> findAllNotices() {
+    public List<NoticeDto> findAllNotices(Long userId) {
         return noticeRepository.findAll()
                 .stream()
                 .map(notice -> {
@@ -30,7 +30,13 @@ public class NoticeService {
                     dto.setId(notice.getId());
                     dto.setAuthorName(notice.getAuthor().getName());
                     dto.setTitle(notice.getTitle());
-                    dto.setBookmarked(notice.isBookmarked());
+
+                    // Get the user by userId
+                    User user = userRepository.findById(userId)
+                            .orElseThrow(() -> new RuntimeException("User not found"));
+                    // Check if the user has bookmarked this notice
+                    boolean isBookmarked = user.getBookmarkedNotices().contains(notice);
+                    dto.setBookmarked(isBookmarked);
 
                     // Format createdAt into day and time components
                     LocalDateTime createdAt = notice.getCreatedAt(); // Assuming this returns LocalDateTime
@@ -44,16 +50,32 @@ public class NoticeService {
                 .toList();
     }
 
-    public void updateBookmarkStatus(Long id, boolean bookmarked) {
+    // POST method to update the bookmarked status of a notice
+    public void updateBookmarkStatus(Long userId, Long id, boolean bookmarked) {
+        // Find the user by userId
+        User user = userRepository.findById(userId)
+                .orElseThrow(() -> new RuntimeException("User not found"));
         // Find the notice by ID
         Notice notice = noticeRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Notice not found"));
 
+        // Check if the user has already bookmarked the notice
+        if (bookmarked) {
+            // If the user is bookmarking the notice, add it to their bookmarked notices
+            user.getBookmarkedNotices().add(notice);
+        } else {
+            // If the user is unbookmarking the notice, remove it from their bookmarked notices
+            user.getBookmarkedNotices().remove(notice);
+        }
+
+        // Update the user's bookmarked notices in the repository
+        userRepository.save(user);
+
         // Update the bookmarked status
-        notice.setBookmarked(bookmarked);
+        //notice.setBookmarked(bookmarked);
 
         // Save the updated notice back to the repository
-        noticeRepository.save(notice);
+        //noticeRepository.save(notice);
     }
 
     // POST method to create a new notice & store in DB

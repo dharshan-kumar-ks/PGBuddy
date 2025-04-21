@@ -48,4 +48,11 @@ public class TicketController {
         return ResponseEntity.ok(tickets);
     }
 
+    // POST method to update the ticket ResolutionStatus to RESOLVED
+    @PostMapping("/resolve/{ticketId}")
+    public ResponseEntity<TicketDto> resolveTicket(@PathVariable Long ticketId) {
+        TicketDto resolvedTicket = ticketService.resolveTicket(ticketId);
+        return ResponseEntity.ok(resolvedTicket);
+    }
+
 }

@@ -6,10 +6,7 @@ import com.example.pgbuddy.Dtos.InternetUsageDto;
 import com.example.pgbuddy.utils.JwtUtil;
 import com.example.pgbuddy.services.InternetUsageService;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestHeader;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -51,5 +48,26 @@ public class InternetUsageController {
         return ResponseEntity.ok(addOnOptions);
     }
 
+    // POST method to update internet usage data based on the selected data add-on
+    @PostMapping("/update/data/{id}")
+    public ResponseEntity<String> updateInternetUsage(@RequestHeader("Authorization") String token,
+                                                     @PathVariable Long id) {
+        // Extract userId from the token
+        Long userId = jwtUtil.extractUserId(token.substring(7)); // Remove "Bearer " prefix
+        // Call the service to update internet usage data
+        internetUsageService.updateInternetUsageForData(userId, id);
+        return ResponseEntity.ok("Recharge successful");
+    }
+
+    // POST method to update internet usage data based on the selected device add-on
+    @PostMapping("/update/device/{id}")
+    public ResponseEntity<String> updateInternetDevice(@RequestHeader("Authorization") String token,
+                                                       @PathVariable Long id) {
+        // Extract userId from the token
+        Long userId = jwtUtil.extractUserId(token.substring(7)); // Remove "Bearer " prefix
+        // Call the service to update internet usage data
+        internetUsageService.updateInternetUsageForDevice(userId, id);
+        return ResponseEntity.ok("Recharge successful");
+    }
 
 }

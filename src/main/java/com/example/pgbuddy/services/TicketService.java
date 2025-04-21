@@ -23,7 +23,7 @@ public class TicketService {
 
     // Logic to get the ticket by ID
     public TicketDto getTicketById(Long id) {
-        Ticket ticket = ticketRepository.findById(Math.toIntExact(id))
+        Ticket ticket = ticketRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("Ticket not found"));
         return mapToDto(ticket);
     }
@@ -35,6 +35,7 @@ public class TicketService {
         ticket.setDescription(ticketDto.getDescription());
         ticket.setPriority(PriorityType.valueOf(ticketDto.getPriority()));
         ticket.setTicketType(TicketType.valueOf(ticketDto.getTicketType()));
+        ticket.setCategory(CategoryType.valueOf(ticketDto.getCategory()));
         ticket.setStatus(ResolutionStatus.valueOf(ticketDto.getStatus()));
         ticket.setCreatedAt(LocalDateTime.now());
 
@@ -63,6 +64,8 @@ public class TicketService {
         dto.setTitle(ticket.getTitle());
         dto.setDescription(ticket.getDescription());
         dto.setPriority(ticket.getPriority().name());
+        // first letter capitalized and the rest in lowercase
+        dto.setCategory(ticket.getCategory().name().substring(0, 1).toUpperCase() + ticket.getCategory().name().substring(1).toLowerCase());
         dto.setTicketType(ticket.getTicketType().name());
         dto.setStatus(ticket.getStatus().name());
         dto.setCreatedAt(ticket.getCreatedAt());
@@ -93,5 +96,14 @@ public class TicketService {
             throw new ResourceNotFoundException("No tickets found");
         }
         return tickets.stream().map(this::mapToDto).toList();
+    }
+
+    // POST method to update the ticket ResolutionStatus to RESOLVED
+    public TicketDto resolveTicket(Long ticketId) {
+        Ticket ticket = ticketRepository.findById(ticketId)
+                .orElseThrow(() -> new ResourceNotFoundException("Ticket not found"));
+        ticket.setStatus(ResolutionStatus.RESOLVED);
+        Ticket resolvedTicket = ticketRepository.save(ticket);
+        return mapToDto(resolvedTicket);
     }
 }

@@ -24,4 +24,6 @@ public class Payment extends BaseModel {
     @ManyToOne
     @JoinColumn(name = "booking_id")
     private Booking booking;
+
+    private String razorpayOrderId;
 }
