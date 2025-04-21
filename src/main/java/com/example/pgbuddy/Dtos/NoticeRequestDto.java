@@ -1,4 +1,4 @@
-package com.example.pgbuddy.controllers;
+package com.example.pgbuddy.Dtos;
 
 import lombok.Data;
 

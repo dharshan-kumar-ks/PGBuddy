@@ -1,6 +1,7 @@
 package com.example.pgbuddy.controllers;
 
 import com.example.pgbuddy.Dtos.NoticeDto;
+import com.example.pgbuddy.Dtos.NoticeRequestDto;
 import com.example.pgbuddy.utils.JwtUtil;
 import com.example.pgbuddy.services.NoticeService;
 import org.springframework.http.ResponseEntity;
@@ -24,18 +25,24 @@ public class NoticeController {
     // @GetMapping -> maps HTTP GET requests to the method.
     @GetMapping
     // ResponseEntity is a Spring class that represents an HTTP response, including status code, headers, and body.
-    public ResponseEntity<List<NoticeDto>> getAllNotices() {
+    public ResponseEntity<List<NoticeDto>> getAllNotices(@RequestHeader("Authorization") String token) {
+        // Extract userId from the token
+        Long userId = jwtUtil.extractUserId(token.substring(7)); // Remove "Bearer " prefix
+
         // used to fetch all notices (using Service Layer)
-        List<NoticeDto> notices = noticeService.findAllNotices();
+        List<NoticeDto> notices = noticeService.findAllNotices(userId);
         // ResponseEntity.ok() creates a response with HTTP status 200 OK and the list of notices as the body.
         return ResponseEntity.ok(notices);
     }
 
-    // a POSTMapping method to update the bookmarked status of a notice
+    // POST method to update the bookmarked status of a notice
     @PostMapping("/{id}/bookmark")
-    public ResponseEntity<Void> updateBookmarkStatus(@PathVariable Long id, @RequestBody boolean bookmarked) {
+    public ResponseEntity<Void> updateBookmarkStatus(@RequestHeader("Authorization") String token, @PathVariable Long id, @RequestBody boolean bookmarked) {
+        // Extract userId from the token
+        Long userId = jwtUtil.extractUserId(token.substring(7)); // Remove "Bearer " prefix
+
         // Call the service to update the bookmark status
-        noticeService.updateBookmarkStatus(id, bookmarked);
+        noticeService.updateBookmarkStatus(userId, id, bookmarked);
         // Return a response indicating success (HTTP 200 OK)
         return ResponseEntity.ok().build();
     }

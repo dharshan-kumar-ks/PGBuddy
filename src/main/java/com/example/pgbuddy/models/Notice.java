@@ -6,6 +6,8 @@ import lombok.Getter;
 import lombok.Setter;
 
 import java.util.Date;
+import java.util.HashSet;
+import java.util.Set;
 
 @Getter
 @Setter
@@ -24,6 +26,10 @@ public class Notice extends BaseModel {
     //private String createdAtDay;
     //private String createdAtTime;
     private boolean bookmarked;
+
+    // Multiple Users can have same Notice & users can bookmark multiple notices (M:M)
+    @ManyToMany(mappedBy = "bookmarkedNotices")
+    private Set<User> usersWhoBookmarked = new HashSet<>();
 
     // createdAt - this is already defined in BaseModel
 }

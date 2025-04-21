@@ -6,6 +6,8 @@ import lombok.Getter;
 import lombok.Setter;
 
 import java.util.Date;
+import java.util.HashSet;
+import java.util.Set;
 
 @Getter
 @Setter
@@ -41,4 +43,9 @@ public class User extends BaseModel {
     private Date dateOfBirth; // Date of Birth
 
     private String profilePicture; // URL or path to the profile picture
+
+    // Multiple Users can have same Notice (M:M)
+    @ManyToMany
+    @JoinTable(name = "user_notice_bookmarks", joinColumns = @JoinColumn(name = "user_id"), inverseJoinColumns = @JoinColumn(name = "notice_id"))
+    private Set<Notice> bookmarkedNotices = new HashSet<>();
 }
