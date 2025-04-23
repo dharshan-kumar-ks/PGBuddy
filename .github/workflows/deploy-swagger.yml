@@ -1,42 +1,54 @@
-name: Deploy Swagger UI to GitHub Pages
+name: Deploy Swagger Docs
 
+# Trigger workflow ONLY when swagger.json changes in main branch
 on:
   push:
-    branches: [ main ] # or master, depending on your default branch
-  pull_request:
-    branches: [ main ]
+    branches: [main]
+    paths:
+      - 'src/main/resources/static/swagger.json'  # Watch this specific file. Only trigger this action if any chnages in this file occurs
+
+# GitHub's Event Listener detects a push to main branch where swagger.json changed
+# Schedules a job on GitHub's Linux runner pool (Microsoft Azure VMs)
+
+# Required permissions for GitHub Pages deployment
+permissions:
+  contents: write  # Allows workflow to push to gh-pages branch
 
 jobs:
   deploy:
     runs-on: ubuntu-latest
     
     steps:
-      - name: Checkout
+      # Step 1: Checkout repository code
+      - name: Checkout code
         uses: actions/checkout@v3
-        
-      - name: Set up Node.js
-        uses: actions/setup-node@v3
-        with:
-          node-version: 16
-          
-      - name: Install Swagger UI
+
+      # Step 2: Prepare Swagger UI files
+      - name: Setup Swagger UI
         run: |
-          npm install -g swagger-ui-watcher
+          # Create output directory
+          mkdir -p ./docs
           
-      - name: Create output directory
-        run: mkdir -p ./swagger-ui
+          # Copy API spec file
+          cp src/main/resources/static/swagger.json ./docs/
           
-      - name: Copy swagger.json
-        run: cp src/main/resources/static/swagger.json ./swagger-ui/
-        
-      - name: Generate Swagger UI
-        run: |
-          swagger-ui-watcher ./swagger-ui/swagger.json \
-            --outfile ./swagger-ui/index.html \
-            --title "API Documentation"
-            
+          # Download and extract Swagger UI
+          wget https://github.com/swagger-api/swagger-ui/archive/refs/tags/v4.15.5.tar.gz
+          tar -xzf v4.15.5.tar.gz
+          
+          # Copy Swagger UI assets
+          cp -r swagger-ui-4.15.5/dist/* ./docs/
+          
+          # Configure Swagger UI to use local spec file
+          sed -i 's|https://petstore.swagger.io/v2/swagger.json|./swagger.json|g' ./docs/swagger-initializer.js
+          
+          # Clean up temporary files
+          rm -rf swagger-ui-4.15.5 v4.15.5.tar.gz
+
+      # Step 3: Deploy to GitHub Pages
       - name: Deploy to GitHub Pages
         uses: peaceiris/actions-gh-pages@v3
         with:
-          github_token: ${{ secrets.GITHUB_TOKEN }}
-          publish_dir: ./swagger-ui
+          github_token: ${{ secrets.GITHUB_TOKEN }}  # Automatic authentication
+          publish_dir: ./docs                       # Directory containing built files
+          force_orphan: true                        # Ensures clean history in gh-pages

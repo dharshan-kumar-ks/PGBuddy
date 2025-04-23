@@ -128,7 +128,12 @@ PGBuddy/
 The API endpoints have been tested using Postman, ensuring compliance with REST API standards.
 
 ## 📖 API Documentation
-- API documentation is available via Swagger UI (`/swagger-ui` route when running the server)   
+
+- Interactive API docs available via **Swagger UI**:  
+  🔗 [https://dharshan-kumar-ks.github.io/PGBuddy/](https://dharshan-kumar-ks.github.io/PGBuddy/)
+- Swagger documentation is **hosted on GitHub Pages** and automatically updated through **GitHub Actions**, following a CI/CD pipeline.
+- Also available on **Postman**, generated directly from the Swagger spec:  
+  🔗 [Postman Public API Docs](https://documenter.getpostman.com/view/43024310/2sB2ixiDX6)
 
 ---
 
@@ -209,6 +214,7 @@ Contributions are welcome! Feel free to fork the repo and submit pull requests.
 ### 💡 Future Enhancement Ideas
 - **Spring Boot Actuator**: Add logging, monitoring, health checks, and metrics endpoints.
 - **Spring Boot Test**: Add unit and integration tests for each feature.
+- **Elastic search**: Implement elastic search in backend; removing the current simple search logic from frontend
 - **Email Alerts**: Notify users via email for ticket status updates and escalations.
 - **Role-Based Dashboards**: Different dashboards for staff, management, and admins.
 - **Media Uploads**: Allow image/file uploads in tickets and café menu items.
