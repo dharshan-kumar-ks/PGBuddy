@@ -144,6 +144,32 @@ INSERT INTO cafe_menu (id, created_at, last_modified_at, description, image_url,
 (15, NOW(), NOW(), 'Crispy golden French fries.', '/meals-7.jpg', true, false, false, 'French Fries', 40, 0),
 (16, NOW(), NOW(), 'Rich chocolate brownie with nuts.', '/meals-7.jpg', true, false, false, 'Chocolate Brownie', 60, 0);
 
+-- insert dummy tickets into tickets table
+INSERT INTO tickets (id, created_at, last_modified_at, category, description, priority, status, ticket_type, title, assigned_to, user_id) VALUES
+(1, '2025-04-01 23:57:09.092729', '2025-04-18 17:15:06.768387', 'INTERNET', 'The internet connection is very slow.', 'HIGH', 'RESOLVED', 'PROBLEM', 'Network Issue', 9, 1),
+(2, '2025-04-06 10:13:56.781501', '2025-04-18 17:34:26.040246', 'FOOD', 'Hot water not coming.', 'LOW', 'RESOLVED', 'PROBLEM', 'Hot Water Issue', 9, 1),
+(3, '2025-04-02 08:45:12.123456', '2025-04-18 12:30:45.654321', 'PLUMBING', 'Air conditioner not working.', 'MEDIUM', 'PENDING', 'INCIDENT', 'AC Issue', 9, 1),
+(4, '2025-04-03 14:20:30.987654', '2025-04-18 15:45:20.123987', 'ROOMCLEANING', 'Room cleaning not done.', 'LOW', 'PENDING', 'SUGGESTION', 'Cleaning Request', 9, 1),
+(5, '2025-04-04 09:15:45.456789', '2025-04-18 10:50:30.789123', 'ELECTRICITY', 'Power outage in the room.', 'HIGH', 'RESOLVED', 'PROBLEM', 'Power Outage', 9, 1),
+(6, '2025-04-05 11:30:25.654321', '2025-04-18 13:15:45.321654', 'FOOD', 'Food quality is not good.', 'MEDIUM', 'PENDING', 'QUESTION', 'Food Quality Issue', 9, 1),
+(7, '2025-04-06 16:45:10.789123', '2025-04-18 18:20:35.987654', 'PLUMBING', 'No water supply in the bathroom.', 'HIGH', 'RESOLVED', 'PROBLEM', 'Water Supply Issue', 9, 1),
+(8, '2025-04-07 07:50:15.321654', '2025-04-18 09:25:40.654987', 'INTERNET', 'WiFi not connecting.', 'MEDIUM', 'PENDING', 'INCIDENT', 'WiFi Issue', 9, 1),
+(9, '2025-04-08 12:10:05.987654', '2025-04-18 14:35:25.123456', 'SECURITY', 'Fan making noise.', 'LOW', 'PENDING', 'SUGGESTION', 'Fan Noise Issue', 9, 1),
+(10, '2025-04-09 18:25:35.654987', '2025-04-18 20:50:15.789123', 'ROOMCLEANING', 'Dustbin not emptied.', 'LOW', 'PENDING', 'QUESTION', 'Dustbin Cleaning', 9, 1);
+
+-- insert dummy conversation into chat_messages table
+INSERT INTO chat_messages (id, created_at, last_modified_at, content, recipient_id, sender_id, ticket_id) VALUES
+(1, '2025-04-19 11:28:01.700374', '2025-04-19 11:28:01.700374', 'Hello, how can I help you?', 9, 1, 1),
+(2, '2025-04-19 11:29:15.123456', '2025-04-19 11:29:15.123456', 'I need assistance with my internet connection.', 1, 9, 1),
+(3, '2025-04-19 11:30:45.654321', '2025-04-19 11:30:45.654321', 'Sure, can you describe the issue?', 9, 1, 1),
+(4, '2025-04-19 11:31:30.987654', '2025-04-19 11:31:30.987654', 'The connection is very slow.', 1, 9, 1),
+(5, '2025-04-19 11:32:10.321654', '2025-04-19 11:32:10.321654', 'I will escalate this to the technical team.', 9, 1, 1),
+(6, '2025-04-19 11:33:25.456789', '2025-04-19 11:33:25.456789', 'Thank you. How long will it take?', 1, 9, 1),
+(7, '2025-04-19 11:34:50.789123', '2025-04-19 11:34:50.789123', 'It should be resolved within 24 hours.', 9, 1, 1),
+(8, '2025-04-19 11:35:15.654987', '2025-04-19 11:35:15.654987', 'Alright, I will wait. Thanks for the update.', 1, 9, 1),
+(9, '2025-04-19 11:36:30.123456', '2025-04-19 11:36:30.123456', 'You are welcome. Let me know if you need anything else.', 9, 1, 1),
+(10, '2025-04-19 11:37:45.987654', '2025-04-19 11:37:45.987654', 'Sure, I will. Have a good day!', 1, 9, 1);
+
 
 SHOW INDEX FROM cafe_order_items;
 

@@ -25,6 +25,7 @@ public class NoticeService {
     public List<NoticeDto> findAllNotices(Long userId) {
         return noticeRepository.findAll()
                 .stream()
+                .sorted((n1, n2) -> n2.getCreatedAt().compareTo(n1.getCreatedAt())) // Sort by CreatedAt in descending order
                 .map(notice -> {
                     NoticeDto dto = new NoticeDto();
                     dto.setId(notice.getId());
