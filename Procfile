@@ -1,1 +1,0 @@
-web: java -Xmx512m -Xms256m -jar target/PGBuddy-0.0.1-SNAPSHOT.jar

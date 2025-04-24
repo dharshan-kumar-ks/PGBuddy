@@ -49,6 +49,8 @@ public class SecurityConfiguration {
               .requestMatchers("/ws/**").permitAll() // Allow WebSocket connections
               .requestMatchers("/chat/**").permitAll()
               .requestMatchers("/swagger-ui/**", "/v3/api-docs/**", "/swagger-ui.html").permitAll()
+              .requestMatchers("/actuator/**").permitAll()
+              .requestMatchers("/manage/**").permitAll()
               //.requestMatchers("/ws").permitAll()
               //.requestMatchers("/api/notices").hasRole("RESIDENT") // Restrict access to users with the RESIDENT role
               .anyRequest().authenticated() // All other endpoints require authentication
