@@ -1,18 +1,28 @@
-# Use OpenJDK 17
-FROM eclipse-temurin:17-jdk
+# Stage 1: Build the JAR
+FROM eclipse-temurin:17-jdk AS builder
 
-# Set working directory
 WORKDIR /app
 
-# Copy Maven Wrapper files (remove the comment after .mvn/)
-COPY mvnw .
-COPY .mvn/ .mvn/
+# Copy only the files needed for dependency resolution (optimizes caching)
 COPY pom.xml .
-COPY src ./src
+COPY .mvn .mvn
+COPY mvnw .
+RUN ./mvnw dependency:go-offline -B
 
-# Build the JAR (ensure mvnw is executable)
-RUN chmod +x mvnw && ./mvnw clean package -DskipTests
+# Copy source code and build
+COPY src src
+RUN ./mvnw clean package -DskipTests && \
+    ls -la target/  # Debug: Verify JAR creation
 
-# Run the app
-CMD ["java", "-jar", "target/pgbuddy-app.jar"]
+# Stage 2: Runtime image
+FROM eclipse-temurin:17-jre
+WORKDIR /app
 
+# Copy the built JAR (using the exact name from pom.xml's <finalName>)
+COPY --from=builder /app/target/pgbuddy-app.jar app.jar
+
+# Set memory limits (matches your pom.xml settings)
+ENV JAVA_OPTS="-Xmx256m -Xms128m -XX:MaxMetaspaceSize=64m"
+
+# Run with exec form for proper signal handling
+ENTRYPOINT ["sh", "-c", "exec java $JAVA_OPTS -jar app.jar"]

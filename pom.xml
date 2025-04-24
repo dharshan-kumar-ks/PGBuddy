@@ -29,7 +29,6 @@
     <properties>
         <java.version>17</java.version>
         <maven.compiler.release>17</maven.compiler.release>
-        <argLine>-Xmx256m</argLine>
         <argLine>-Xmx256m -Xms128m -XX:MaxMetaspaceSize=64m</argLine>
     </properties>
 
@@ -52,7 +51,7 @@
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-devtools</artifactId>
             <scope>runtime</scope>
-            <optional>true</optional>
+            <optional>true</optional> <!-- Keep this to exclude from production -->
         </dependency>
 
         <dependency>
@@ -133,6 +132,7 @@
     </dependencies>
 
     <build>
+        <finalName>pgbuddy-app</finalName>  <!-- Ensures consistent JAR naming -->
         <plugins>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
@@ -160,6 +160,13 @@
                         </exclude>
                     </excludes>
                 </configuration>
+                <executions>
+                    <execution>
+                        <goals>
+                            <goal>repackage</goal>  <!-- Explicitly repackage the JAR -->
+                        </goals>
+                    </execution>
+                </executions>
             </plugin>
         </plugins>
     </build>
