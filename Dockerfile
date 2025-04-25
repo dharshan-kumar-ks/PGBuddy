@@ -22,7 +22,8 @@ WORKDIR /app
 COPY --from=builder /app/target/pgbuddy-app.jar app.jar
 
 # Set memory limits (matches your pom.xml settings)
-ENV JAVA_OPTS="-Xmx256m -Xms128m -XX:MaxMetaspaceSize=64m"
+# Increase Metaspace to 128MB and total heap to match Render's 512MB free tier
+ENV JAVA_OPTS="-Xmx384m -Xms128m -XX:MaxMetaspaceSize=128m -XX:+UseContainerSupport"
 
 # Run with exec form for proper signal handling
 ENTRYPOINT ["sh", "-c", "exec java $JAVA_OPTS -jar app.jar"]

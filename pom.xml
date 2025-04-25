@@ -29,7 +29,7 @@
     <properties>
         <java.version>17</java.version>
         <maven.compiler.release>17</maven.compiler.release>
-        <argLine>-Xmx256m -Xms128m -XX:MaxMetaspaceSize=64m</argLine>
+        <argLine>-Xmx384m -Xms128m -XX:MaxMetaspaceSize=128m</argLine>
     </properties>
 
     <dependencies>
@@ -152,13 +152,7 @@
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-maven-plugin</artifactId>
                 <configuration>
-                    <jvmArguments>-Xmx256m -Xms128m</jvmArguments>
-                    <excludes>
-                        <exclude>
-                            <groupId>org.projectlombok</groupId>
-                            <artifactId>lombok</artifactId>
-                        </exclude>
-                    </excludes>
+                    <jvmArguments>-Xmx384m -Xms128m -XX:MaxMetaspaceSize=128m</jvmArguments>
                 </configuration>
                 <executions>
                     <execution>
