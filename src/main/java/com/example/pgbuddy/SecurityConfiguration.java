@@ -45,13 +45,11 @@ public class SecurityConfiguration {
       http.cors(withDefaults())
               .csrf(csrf -> csrf.disable())
               .authorizeHttpRequests(auth -> auth
+              .requestMatchers("/", "/index.html", "/static/**").permitAll() // Add these
               .requestMatchers("/api/signin", "/api/signup").permitAll() // Public endpoints (can access without any authentication)
-              .requestMatchers("/ws/**").permitAll() // Allow WebSocket connections
-              .requestMatchers("/chat/**").permitAll()
+              .requestMatchers("/ws/**", "/chat/**").permitAll() // Allow WebSocket connections
               .requestMatchers("/swagger-ui/**", "/v3/api-docs/**", "/swagger-ui.html").permitAll()
-              .requestMatchers("/actuator/**").permitAll()
-              .requestMatchers("/manage/**").permitAll()
-              //.requestMatchers("/ws").permitAll()
+              .requestMatchers("/actuator/**", "/manage/**").permitAll()
               //.requestMatchers("/api/notices").hasRole("RESIDENT") // Restrict access to users with the RESIDENT role
               .anyRequest().authenticated() // All other endpoints require authentication
               //.anyRequest().permitAll() // Allow all requests for now
@@ -63,12 +61,17 @@ public class SecurityConfiguration {
 
     @Bean
     public CorsFilter corsFilter() {
-        UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
         CorsConfiguration config = new CorsConfiguration();
         config.setAllowCredentials(true);
-        config.setAllowedOrigins(Arrays.asList("http://localhost:5173"));
-        config.setAllowedHeaders(Arrays.asList("Origin", "Content-Type", "Accept", "Authorization", "Upgrade", "Connection"));
-        config.setAllowedMethods(Arrays.asList("GET", "POST", "PUT", "DELETE", "OPTIONS"));
+        //config.setAllowedOrigins(Arrays.asList("http://localhost:5173"));
+        //config.setAllowedHeaders(Arrays.asList("Origin", "Content-Type", "Accept", "Authorization", "Upgrade", "Connection"));
+        //config.setAllowedMethods(Arrays.asList("GET", "POST", "PUT", "DELETE", "OPTIONS"));
+
+        config.setAllowedOrigins(Arrays.asList("http://localhost:5173", "https://pg-buddy-front-end.vercel.app")); // Added frontend URL
+        config.setAllowedMethods(Arrays.asList("*"));
+        config.setAllowedHeaders(Arrays.asList("*"));
+
+        UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
         source.registerCorsConfiguration("/**", config);
         return new CorsFilter(source);
     }
