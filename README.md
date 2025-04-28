@@ -16,8 +16,14 @@ This repo contains the **backend** code for PGBuddy, built with Spring Boot. If 
 ---
 ## ☁️ Hosting
 
-This project is hosted on **Railway** cloud for backend and on **Vercel** cloud for frontend which can be accessed at:  
-🔗 [PG Buddy Website](https://pg-buddy-front-end.vercel.app)
+This project is fully cloud-hosted.  
+You can access the live website here: 🔗 [PG Buddy Website](https://pg-buddy-front-end.vercel.app)
+
+If you prefer to interact directly with the backend (e.g., via Postman or your own frontend), you can use this backend URL:  🔗 [Backend API](https://pgbuddy.onrender.com)
+
+- 🖥️ **Backend**: Hosted on **Render** (running inside a Docker container)
+- 🗄️ **Database**: Hosted on **Railway** (SQL database)
+- 🌐 **Frontend**: Hosted on **Vercel**
 
 **Test Credentials:**  
 - Resident user:
@@ -29,10 +35,15 @@ This project is hosted on **Railway** cloud for backend and on **Vercel** cloud 
 
 Or, you can create your own profile as a resident user using the **Registration** page.
 
+⚡ **Important Note**:
+- The backend may take up to **3 minutes** for the initial boot-up when opening the website because it goes into **sleep mode** after **30 minutes of inactivity** (to optimize cloud resource usage and reduce costs).
+- Once the server is awake, subsequent API calls will be much faster (in milliseconds).
+
 ---
 ## ✨ Features
 
 - **Modular Services**: Cleanly separated service, repository, and controller layers for better organization and testability.
+- **Stream Processing**: Used Java Streams in service layer for declarative, readable operations instead of traditional loops.
 
 ### 👤 Resident View (PG Mates)
 - **Secure Authentication**: Sign up or log in via email with JWT-based authentication (Spring Security).
@@ -52,14 +63,14 @@ Or, you can create your own profile as a resident user using the **Registration*
 
 ## ⚙️ Tech Stack
 
-- **Backend**: Spring Boot 3.4.3, Spring Data JPA, Spring Security, Spring Websocket (SockJS + STOMP)
+- **Backend**: Spring Boot 3.4.3, Spring Data JPA, Spring Security, Spring Actuator, Spring Websocket (SockJS + STOMP)
 - **Language**: Java 23.0.1
 - **Database**: MySQL 8.0.41
-- **Authentication**: JWT (JSON Web Tokens) 0.11.5
+- **Authentication**: JWT (JSON Web Tokens) 0.12.5
 - **Payment Gateway**: Razorpay 1.4.8
 - **ORM**: Hibernate 8.0.1
 - **Build Tool**: Maven 4.0.0
-- **Dependencies**: Lombok 1.18.30, Swagger 2.2.0
+- **Dependencies**: Lombok 1.18.30, Swagger 2.5.0
 - **Cloud & Deployment:** Railway
 - 🔌 **Other Notable Integrations**:
   - Implemented **real-time chat** using $\color{teal}{\textsf{WebSockets}}$ over **SockJS** with a simple **message broker**; clients send messages to `"/app/chat.sendMessage"` and receive them via `"/user/queue/messages"`.
@@ -90,6 +101,21 @@ PGBuddy/
 └── README.md
 ```
 
+### 🧠 Project Architecture Flow (Mind Map)
+
+- **User Request**
+  - ⬇️
+- **Frontend** (React App - Hosted on Vercel)
+  - ⬇️ API calls (Axios / Fetch)
+- **Backend** (Spring Boot - Hosted on Render)
+  - ⬇️ Filters (JWT Authentication / Token Validation)
+- **Controllers** (Handle incoming API/WebSocket requests)
+  - ⬇️
+- **Services** (Business Logic)
+  - ⬇️
+- **Repositories** (Database Access)
+  - ⬇️
+- **Database** (SQL - Hosted on Railway)
 
 ---
 ## 📍 API Endpoints (Important Ones)
@@ -125,13 +151,16 @@ PGBuddy/
 - **GET** `/api/roomcleaning/usage` – Check past room cleaning usage.
 - **POST** `/api/roomcleaning/request` – Request a new room cleaning service.
 
+### 📊 Application Metrics
+- **GET** `/api/system/metrics` – Fetch system health metrics like CPU and memory usage
+
 The API endpoints have been tested using Postman, ensuring compliance with REST API standards.
 
 ## 📖 API Documentation
 
 - Interactive API docs available via **Swagger UI**:  
   🔗 [https://dharshan-kumar-ks.github.io/PGBuddy/](https://dharshan-kumar-ks.github.io/PGBuddy/)
-- Swagger documentation is **hosted on GitHub Pages** and automatically updated through **GitHub Actions**, following a CI/CD pipeline.
+- Swagger documentation is **hosted on GitHub Pages** and automatically updated through **GitHub Actions** when backend changes, following a CI/CD pipeline.
 - Also available on **Postman**, generated directly from the Swagger spec:  
   🔗 [Postman Public API Docs](https://documenter.getpostman.com/view/43024310/2sB2ixiDX6)
 
@@ -187,7 +216,12 @@ Create a database:
 CREATE DATABASE pg_mates;
 ```
 
-Update `src/main/resources/application.properties` with your MySQL DB credential
+Set the active profile to `dev` from `prod` in `src/main/resources/application.properties`:
+```
+spring.profiles.active=dev
+```
+
+Update `src/main/resources/application-dev.properties` with your MySQL DB credential
 ```
 spring.datasource.url=jdbc:mysql://localhost:3306/pg_mates
 spring.datasource.username=root
@@ -208,12 +242,14 @@ mvn spring-boot:run
 The app will start on http://localhost:8080
 
 ---
-## Contributing
+## Contributions
 Contributions are welcome! Feel free to fork the repo and submit pull requests.
 
 ### 💡 Future Enhancement Ideas
-- **Spring Boot Actuator**: Add logging, monitoring, health checks, and metrics endpoints.
+- **Spring Boot Actuator**: Add detailed logging, monitoring, health checks, and metrics endpoints.
+- **Metrics Visualization**: Integrate Prometheus and Grafana for real-time system monitoring and metric dashboards.
 - **Spring Boot Test**: Add unit and integration tests for each feature.
+- **Custom Exception Handling**: Add more project-specific exception classes instead of generic Java exceptions for better error tracking.
 - **Elastic search**: Implement elastic search in backend; removing the current simple search logic from frontend
 - **Email Alerts**: Notify users via email for ticket status updates and escalations.
 - **Role-Based Dashboards**: Different dashboards for staff, management, and admins.
@@ -225,6 +261,7 @@ Contributions are welcome! Feel free to fork the repo and submit pull requests.
 - **Feedback Surveys**: Show monthly satisfaction pop-ups on the homepage.
 - **Resident Onboarding**: KYC, document upload, and digital signature during registration.
 - **Escalation Notices**: Auto-notify users if their ticket remains unanswered for 2+ days.
+- **Usage Data Export**: Allow residents to download their internet/electricity usage reports as CSV files.
 - **Password Recovery**: Add "Forgot Password" support on the login screen.
 - **Roommate Explorer**: Discover roommate profiles and switch rooms via an interactive room map.
 - **Dynamic Meal Management**: Let admins add or remove meal options on the fly.
