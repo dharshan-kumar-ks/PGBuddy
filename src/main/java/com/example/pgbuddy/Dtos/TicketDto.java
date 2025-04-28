@@ -5,6 +5,7 @@ import lombok.Setter;
 
 import java.time.LocalDateTime;
 
+// DTO class for Ticket
 @Getter
 @Setter
 public class TicketDto {
@@ -19,4 +20,3 @@ public class TicketDto {
     private String status = "PENDING";  // Default status
     private LocalDateTime createdAt;
 }
-// TODO: add category to this DTO

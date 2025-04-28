@@ -5,6 +5,7 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.Table;
 import lombok.Data;
 
+// DTO class for Internet Device Add-On details
 @Data
 public class InternetDeviceAddOnDto {
     private int packId;

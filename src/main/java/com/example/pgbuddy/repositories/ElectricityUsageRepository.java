@@ -6,6 +6,7 @@ import org.springframework.stereotype.Repository;
 
 import java.util.Optional;
 
+// Repository interface for ElectricityUsage entity
 @Repository
 public interface ElectricityUsageRepository extends JpaRepository<ElectricityUsage, Long> {
     // Custom query methods can be defined here if needed

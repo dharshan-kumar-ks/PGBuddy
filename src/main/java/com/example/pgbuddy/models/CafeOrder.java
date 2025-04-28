@@ -5,6 +5,7 @@ import lombok.Data;
 
 import java.util.List;
 
+// CafeOrder class representing an order placed by a user in the cafe
 @Data
 @Entity
 @Table(name = "cafe_orders")

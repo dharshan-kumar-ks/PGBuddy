@@ -7,6 +7,7 @@ import lombok.NoArgsConstructor;
 
 import java.time.LocalDateTime;
 
+// ChatMessage class representing a message in the chat system
 @Entity
 @Table(name = "chat_messages")
 @Data

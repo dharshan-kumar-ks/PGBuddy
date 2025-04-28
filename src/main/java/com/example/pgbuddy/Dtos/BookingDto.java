@@ -4,6 +4,7 @@ import lombok.Data;
 
 import java.util.Date;
 
+// DTO class for Booking details
 @Data
 public class BookingDto {
     private Long bookingId;

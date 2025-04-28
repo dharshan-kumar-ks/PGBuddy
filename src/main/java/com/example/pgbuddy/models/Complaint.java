@@ -3,6 +3,7 @@ package com.example.pgbuddy.models;
 import jakarta.persistence.*;
 import lombok.Data;
 
+// Complaint class representing a complaint made by a user
 @Data
 @Entity
 @Table(name = "complaints")

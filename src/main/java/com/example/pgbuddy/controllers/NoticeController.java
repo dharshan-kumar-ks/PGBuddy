@@ -9,6 +9,10 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
+/**
+ * Controller for handling notice-related requests.
+ * Provides endpoints to retrieve all notices, update bookmark status, and create new notices.
+ */
 @RestController
 @RequestMapping("/api/notices")
 //@CrossOrigin(origins = "http://localhost:5173") // Allow requests from React
@@ -16,12 +20,24 @@ public class NoticeController {
     private final NoticeService noticeService;
     private final JwtUtil jwtUtil;
 
+    /**
+     * Constructor for NoticeController.
+     *
+     * @param noticeService The service for handling notice-related business logic.
+     * @param jwtUtil The utility for handling JWT operations, such as extracting userId from tokens.
+     */
     public NoticeController(NoticeService noticeService, JwtUtil jwtUtil) {
         this.noticeService = noticeService;
         this.jwtUtil = jwtUtil;
     }
 
-    // This method is responsible for handling HTTP GET requests to retrieve all notices
+    /**
+     * Retrieves all notices for a specific user based on the provided JWT token.
+     *
+     * @param token The Authorization header containing the JWT token.
+     * @return A ResponseEntity containing a list of NoticeDto objects.
+     */
+    // GET method to retrieve all notices
     // @GetMapping -> maps HTTP GET requests to the method.
     @GetMapping
     // ResponseEntity is a Spring class that represents an HTTP response, including status code, headers, and body.
@@ -35,6 +51,14 @@ public class NoticeController {
         return ResponseEntity.ok(notices);
     }
 
+    /**
+     * Updates the bookmarked status of a specific notice.
+     *
+     * @param token The Authorization header containing the JWT token.
+     * @param id The ID of the notice to update.
+     * @param bookmarked The new bookmarked status (true or false).
+     * @return A ResponseEntity with an HTTP status indicating success.
+     */
     // POST method to update the bookmarked status of a notice
     @PostMapping("/{id}/bookmark")
     public ResponseEntity<Void> updateBookmarkStatus(@RequestHeader("Authorization") String token, @PathVariable Long id, @RequestBody boolean bookmarked) {
@@ -47,6 +71,13 @@ public class NoticeController {
         return ResponseEntity.ok().build();
     }
 
+    /**
+     * Creates a new notice and stores it in the database.
+     *
+     * @param token The Authorization header containing the JWT token.
+     * @param noticeRequestDto The request body containing the details of the notice to create.
+     * @return A ResponseEntity containing the created NoticeDto and an HTTP status of 201 Created.
+     */
     // POST method to create a new notice & store in DB
     @PostMapping("/publish")
     public ResponseEntity<NoticeDto> createNotice(@RequestHeader("Authorization") String token, @RequestBody NoticeRequestDto noticeRequestDto) {

@@ -6,6 +6,7 @@ import org.springframework.stereotype.Repository;
 
 import java.util.List;
 
+// Repository interface for CafeMenu entity
 @Repository
 public interface CafeRepository extends JpaRepository<CafeMenu, Long> {
     // Custom query methods can be defined here if needed

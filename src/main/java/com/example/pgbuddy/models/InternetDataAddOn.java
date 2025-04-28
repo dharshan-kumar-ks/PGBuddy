@@ -4,6 +4,7 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.Table;
 import lombok.Data;
 
+// InternetDataAddOn class representing the internet data add-on details
 @Data
 @Entity
 @Table(name = "internet_data_addon")

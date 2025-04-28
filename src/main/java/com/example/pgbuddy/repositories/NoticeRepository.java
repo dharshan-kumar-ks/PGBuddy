@@ -5,6 +5,7 @@ import com.example.pgbuddy.models.User;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
+// Repository interface for Notice entity
 @Repository
 public interface NoticeRepository extends JpaRepository<Notice, Long> {
 

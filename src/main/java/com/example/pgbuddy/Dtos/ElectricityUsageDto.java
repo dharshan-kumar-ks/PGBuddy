@@ -5,6 +5,7 @@ import jakarta.persistence.JoinColumn;
 import jakarta.persistence.OneToOne;
 import lombok.Data;
 
+// DTO class for Electricity Usage details
 @Data
 public class ElectricityUsageDto {
     private double dailyUsageKwh;

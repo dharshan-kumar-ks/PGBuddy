@@ -15,9 +15,10 @@ import org.springframework.web.socket.server.HandshakeInterceptor;
 
 import java.util.Map;
 
+// Interceptor for handling JWT authentication in WebSocket handshakes
 @Component
 public class JwtHandshakeInterceptor implements HandshakeInterceptor {
-
+    // Logger for logging information (for better debugging and tracing)
     private static final Logger logger = LoggerFactory.getLogger(JwtHandshakeInterceptor.class);
 
     private final JwtUtil jwtUtil;
@@ -28,16 +29,25 @@ public class JwtHandshakeInterceptor implements HandshakeInterceptor {
         this.userRepository = userRepository;
     }
 
+    // This method is executed before a WebSocket handshake is completed.
+    // It validates the JWT token (if provided):
+    // If the token is valid, the user details are extracted and stored in the attributes map & allows the connection.
+    // If the token is missing or invalid, the connection is allowed (but without user authentication - no user details are set) => [we can later code to refuse the connection]
     @Override
     public boolean beforeHandshake(ServerHttpRequest request, ServerHttpResponse response,
                                    WebSocketHandler wsHandler, Map<String, Object> attributes) throws Exception {
         logger.info(">>> Handshake attempt received.");
 
-        String token = null;
+        String token = null; // Initialize token to null
+
+        // Check if the request is an instance of ServletServerHttpRequest
         if (request instanceof ServletServerHttpRequest servletRequest) {
+            // Get the HttpServletRequest from the ServerHttpRequest
             HttpServletRequest req = servletRequest.getServletRequest();
-            // Check Authorization header first (preferred for SockJS)
+            // Extract the Authorization header from the request (for SockJS)
             String authHeader = req.getHeader("Authorization");
+
+            // Check if the Authorization header is present and starts with "Bearer"; else fallback to query parameter
             if (authHeader != null && authHeader.startsWith("Bearer ")) {
                 token = authHeader.substring(7);
                 logger.info(">>> Token extracted from Authorization header: {}", token);
@@ -48,15 +58,18 @@ public class JwtHandshakeInterceptor implements HandshakeInterceptor {
             }
         }
 
+        // Validate the token
         if (token == null || !jwtUtil.validateToken(token)) {
             logger.warn(">>> Token is missing or invalid. Connection allowed but unauthenticated.");
             return true; // Allow connection but don’t set user details
         }
 
+        // Extract user email from the token
         String email = jwtUtil.extractEmail(token);
         logger.info(">>> Extracted user email from token: {}", email);
-
+        // Find the user by email
         User user = userRepository.findByEmail(email).orElse(null);
+        // If the user is not found, log a warning and allow connection without setting user details
         if (user == null) {
             logger.warn(">>> No user found for token.");
             return true;
@@ -67,13 +80,15 @@ public class JwtHandshakeInterceptor implements HandshakeInterceptor {
         attributes.put("email", email);
         logger.info(">>> User found: {} (ID: {}). Setting attributes.", email, user.getId());
 
-        return true;
+        return true; // Allow the handshake to proceed
     }
 
+    // This method is called after the WebSocket handshake is completed - for now we do nothing (just log success or failure error)
     @Override
     public void afterHandshake(ServerHttpRequest request, ServerHttpResponse response,
                                WebSocketHandler wsHandler, Exception ex) {
         logger.info(">>> After handshake. Success: {}", ex == null);
+        // Log the exception if it occurred
         if (ex != null) {
             logger.error(">>> Handshake error occurred: ", ex);
         }

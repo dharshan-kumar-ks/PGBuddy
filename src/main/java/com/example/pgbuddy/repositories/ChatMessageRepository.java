@@ -6,6 +6,7 @@ import org.springframework.stereotype.Repository;
 
 import java.util.List;
 
+// Repository interface for ChatMessage entity
 @Repository
 public interface ChatMessageRepository extends JpaRepository<ChatMessage, Long> {
     // Find all chat messages for a specific ticket, ordered by creation date

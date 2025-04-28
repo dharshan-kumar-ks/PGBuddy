@@ -3,6 +3,7 @@ package com.example.pgbuddy.models;
 import jakarta.persistence.*;
 import lombok.Data;
 
+// CafeOrderItem class represents an item in a cafe order
 @Data
 @Entity
 @Table(name = "cafe_order_items")

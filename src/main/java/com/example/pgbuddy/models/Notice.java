@@ -9,6 +9,7 @@ import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
 
+// Model class for Notice details
 @Getter
 @Setter
 @Entity

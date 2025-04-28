@@ -8,6 +8,7 @@ import lombok.Data;
 
 import java.time.LocalDate;
 
+// RoomCleaning class representing the room cleaning sessions
 @Data
 @Entity
 @Table(name = "room_cleaning_sessions")

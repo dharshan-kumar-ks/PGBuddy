@@ -4,6 +4,7 @@ import lombok.Data;
 
 import java.time.LocalDate;
 
+// DTO class for Room Cleaning details
 @Data
 public class RoomCleaningResponseDto {
     private String cleaningDate;

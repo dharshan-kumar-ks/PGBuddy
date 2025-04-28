@@ -2,6 +2,7 @@ package com.example.pgbuddy.Dtos;
 
 import lombok.Data;
 
+// DTO class for Payment Transaction details
 @Data
 public class PaymentTransactionDto {
     private String transactionId;

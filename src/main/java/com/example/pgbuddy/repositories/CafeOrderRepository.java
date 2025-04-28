@@ -6,6 +6,7 @@ import org.springframework.stereotype.Repository;
 
 import java.util.List;
 
+// Repository interface for CafeOrder entity
 @Repository
 public interface CafeOrderRepository extends JpaRepository<CafeOrder, Long> {
     List<CafeOrder> findByUserId(Long userId);

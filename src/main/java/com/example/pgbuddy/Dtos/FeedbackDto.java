@@ -6,6 +6,7 @@ import jakarta.persistence.ManyToOne;
 import lombok.Getter;
 import lombok.Setter;
 
+// DTO class for Feedback
 @Getter
 @Setter
 public class FeedbackDto {

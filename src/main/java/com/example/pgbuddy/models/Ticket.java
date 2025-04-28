@@ -4,6 +4,7 @@ import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
 
+// Ticket class representing a support ticket
 @Getter
 @Setter
 @Entity

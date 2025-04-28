@@ -3,6 +3,7 @@ package com.example.pgbuddy.Dtos;
 import lombok.Data;
 import java.time.LocalDate;
 
+// DTO class for Internet Usage details
 @Data
 public class InternetUsageDto {
     private double totalDataGb; // e.g., 105 GB

@@ -6,7 +6,7 @@ import lombok.Data;
 import java.util.ArrayList;
 import java.util.List;
 
-
+// Room class representing the room details
 @Data
 @Entity
 @Table(name = "rooms")

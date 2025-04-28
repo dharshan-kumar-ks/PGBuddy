@@ -4,6 +4,7 @@ import com.example.pgbuddy.models.User;
 import lombok.Getter;
 import lombok.Setter;
 
+// DTO class for Notice
 @Getter
 @Setter
 public class NoticeDto {

@@ -5,6 +5,7 @@ import lombok.Data;
 
 import java.util.Date;
 
+// Model class for MealVote details
 @Data
 @Entity
 @Table(name = "meal_votes")

@@ -5,6 +5,7 @@ import lombok.Data;
 
 import java.util.List;
 
+// Meal class representing the meal details
 @Data
 @Entity
 @Table(name = "meals")

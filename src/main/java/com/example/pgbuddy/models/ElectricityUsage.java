@@ -6,6 +6,7 @@ import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
 import lombok.Data;
 
+// ElectricityUsage class representing the electricity usage details
 @Data
 @Entity
 @Table(name = "electricity_usage")

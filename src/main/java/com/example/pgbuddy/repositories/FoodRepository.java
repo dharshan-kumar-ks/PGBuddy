@@ -8,6 +8,7 @@ import org.springframework.stereotype.Repository;
 import java.util.Date;
 import java.util.List;
 
+// Repository interface for MealVote entity
 @Repository
 public interface FoodRepository extends JpaRepository<MealVote, Long> {
     List<MealVote> findByMealDateAndMealTimeType(Date mealDate, MealTimeType mealTimeType);

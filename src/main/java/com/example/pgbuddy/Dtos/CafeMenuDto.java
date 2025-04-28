@@ -2,6 +2,7 @@ package com.example.pgbuddy.Dtos;
 
 import lombok.Data;
 
+// DTO class for Cafe Menu details
 @Data
 public class CafeMenuDto {
     private String name;

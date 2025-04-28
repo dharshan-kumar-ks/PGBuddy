@@ -6,6 +6,7 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
+// Repository interface for RoomCleaning entity
 @Repository
 public interface RoomCleaningRepository extends JpaRepository<RoomCleaning, Long> {
     // Custom query methods can be defined here if needed

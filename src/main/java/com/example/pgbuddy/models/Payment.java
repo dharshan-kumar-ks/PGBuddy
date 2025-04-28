@@ -3,6 +3,7 @@ package com.example.pgbuddy.models;
 import jakarta.persistence.*;
 import lombok.Data;
 
+// Model class for Payment details
 @Data
 @Entity
 @Table(name = "payments")

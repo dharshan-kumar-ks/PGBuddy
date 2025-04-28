@@ -3,6 +3,7 @@ package com.example.pgbuddy.Dtos;
 import lombok.Getter;
 import lombok.Setter;
 
+// DTO class for SignUp request
 @Getter
 @Setter
 public class SignUpRequestDto {

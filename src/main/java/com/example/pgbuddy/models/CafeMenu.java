@@ -4,6 +4,7 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.Table;
 import lombok.Data;
 
+// Model class for Cafe Menu details
 @Data
 @Entity
 @Table(name = "cafe_menu")

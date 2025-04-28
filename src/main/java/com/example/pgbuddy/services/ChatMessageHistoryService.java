@@ -7,14 +7,28 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 
+/**
+ * Service class for handling chat message history operations.
+ */
 @Service
 public class ChatMessageHistoryService {
     private ChatMessageRepository chatMessageRepository;
 
+    /**
+     * Constructor for ChatMessageHistoryService.
+     *
+     * @param chatMessageRepository Repository for accessing chat message data.
+     */
     public ChatMessageHistoryService(ChatMessageRepository chatMessageRepository) {
         this.chatMessageRepository = chatMessageRepository;
     }
 
+    /**
+     * Retrieves the chat history for a specific ticket, ordered by creation time.
+     *
+     * @param ticketId The ID of the ticket for which the chat history is to be retrieved.
+     * @return A list of ChatMessageDto objects representing the chat messages.
+     */
     // GET chat history by ticket ID
     public List<ChatMessageDto> getChatHistoryByTicket(Long ticketId) {
         // Call repository to get chat history
@@ -30,6 +44,6 @@ public class ChatMessageHistoryService {
                         chatMessage.getTicket().getId()))
                 .toList();
 
-    return chatMessageDtos;
+    return chatMessageDtos; // Return the list of chat message DTOs
     }
 }

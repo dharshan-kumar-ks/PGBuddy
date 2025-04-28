@@ -6,6 +6,7 @@ import org.springframework.stereotype.Repository;
 
 import java.util.Optional;
 
+// Repository interface for InternetUsage entity
 @Repository
 public interface InternetUsageRepository extends JpaRepository<InternetUsage, Long> {
     // Custom query methods can be defined here if needed

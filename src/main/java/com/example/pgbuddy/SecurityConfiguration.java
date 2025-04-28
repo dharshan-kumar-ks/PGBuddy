@@ -20,6 +20,7 @@ import static org.springframework.security.config.Customizer.withDefaults;
 @EnableWebSecurity
 // Marks this class as a source of bean definitions for the Spring application context.
 @Configuration
+// This class configures security settings for the application, including authentication and authorization rules.
 public class SecurityConfiguration {
     // Register the JwtFilter in our Spring Security configuration
     private final JwtFilter jwtFilter;
@@ -31,10 +32,6 @@ public class SecurityConfiguration {
     @Bean
     // Configures security rules for HTTP requests.
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
-        // Disables CSRF (Cross-Site Request Forgery) protection for requests matching the path signup (e.g., /signup).
-        // Requests to /signup will not require a CSRF token (useful for endpoints like user registration forms or APIs).
-        //http.csrf(csrf -> csrf.ignoringRequestMatchers("signup"));
-
         // disable csrf for all endpoints (for testing)
 //        http
 //                .cors(withDefaults())
@@ -42,37 +39,47 @@ public class SecurityConfiguration {
 //                .authorizeHttpRequests(auth -> auth.anyRequest().permitAll()); // Allow all requests without authentication
 //        return http.build();
 
+      // Configures security rules for HTTP requests.
       http.cors(withDefaults())
+              // Disables CSRF (Cross-Site Request Forgery) protection for the application.
+              // Requests to endpoints like /signup will not require a CSRF token
               .csrf(csrf -> csrf.disable())
+              // Configures authorization rules for HTTP requests.
               .authorizeHttpRequests(auth -> auth
-              .requestMatchers("/", "/index.html", "/static/**").permitAll() // Add these
+              .requestMatchers("/", "/index.html", "/static/**").permitAll() // Allow access to static resources
               .requestMatchers("/api/signin", "/api/signup").permitAll() // Public endpoints (can access without any authentication)
-              .requestMatchers("/ws/**", "/chat/**").permitAll() // Allow WebSocket connections
-              .requestMatchers("/swagger-ui/**", "/v3/api-docs/**", "/swagger-ui.html").permitAll()
-              .requestMatchers("/actuator/**", "/manage/**").permitAll()
+              .requestMatchers("/ws/**", "/chat/**").permitAll() // Allow WebSocket connections (without authentication)
+              .requestMatchers("/swagger-ui/**", "/v3/api-docs/**", "/swagger-ui.html").permitAll() // Allow Swagger UI and API docs (without authentication)
+              .requestMatchers("/actuator/**", "/manage/**").permitAll() // Allow Actuator endpoints (without authentication)
               //.requestMatchers("/api/notices").hasRole("RESIDENT") // Restrict access to users with the RESIDENT role
               .anyRequest().authenticated() // All other endpoints require authentication
-              //.anyRequest().permitAll() // Allow all requests for now
+              //.anyRequest().permitAll() // Allow all requests for now (uncomment this for debugging purposes)
           )
-          .addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class);
-        return http.build();
+          .addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class); // Add JWT filter before the UsernamePasswordAuthenticationFilter
+        return http.build(); // Builds the security filter chain
     }
 
 
+    // Configures CORS (Cross-Origin Resource Sharing) settings for the application.
     @Bean
     public CorsFilter corsFilter() {
+        // Creates a new CorsConfiguration object to define CORS settings.
         CorsConfiguration config = new CorsConfiguration();
-        config.setAllowCredentials(true);
-        //config.setAllowedOrigins(Arrays.asList("http://localhost:5173"));
-        //config.setAllowedHeaders(Arrays.asList("Origin", "Content-Type", "Accept", "Authorization", "Upgrade", "Connection"));
-        //config.setAllowedMethods(Arrays.asList("GET", "POST", "PUT", "DELETE", "OPTIONS"));
+        config.setAllowCredentials(true); // Allow credentials (cookies, authorization headers, etc.) to be sent in CORS requests
 
+        // Set allowed origins, methods, and headers for CORS requests.
         config.setAllowedOrigins(Arrays.asList("http://localhost:5173", "https://pg-buddy-front-end.vercel.app")); // Added frontend URL
         config.setAllowedMethods(Arrays.asList("*"));
         config.setAllowedHeaders(Arrays.asList("*"));
 
-        UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
-        source.registerCorsConfiguration("/**", config);
+        // Uncomment the following lines to restrict CORS settings to specific origins, methods, and headers:-
+        //config.setAllowedHeaders(Arrays.asList("Origin", "Content-Type", "Accept", "Authorization", "Upgrade", "Connection"));
+        //config.setAllowedMethods(Arrays.asList("GET", "POST", "PUT", "DELETE", "OPTIONS"));
+
+        // Define CORS settings for all URL patterns (/**) or endpoints in the application.
+        // (UrlBasedCorsConfigurationSource is a class in the Spring Framework used to configure CORS settings for specific URL patterns in a Spring application)
+        UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource(); // Creates a new UrlBasedCorsConfigurationSource object -> to define CORS settings based on URL patterns.
+        source.registerCorsConfiguration("/**", config); // Apply the CORS configuration to all endpoints.
         return new CorsFilter(source);
     }
 
@@ -82,4 +89,5 @@ public class SecurityConfiguration {
     public BCryptPasswordEncoder getEncoder() {
         return new BCryptPasswordEncoder();
     }
+    // passwords are never stored in plain text in the database (only hashed values are stored)
 }

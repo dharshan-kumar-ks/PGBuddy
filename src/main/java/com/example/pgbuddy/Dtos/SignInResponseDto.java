@@ -5,6 +5,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+// DTO class for SignIn response
 @Getter
 @Setter
 @AllArgsConstructor

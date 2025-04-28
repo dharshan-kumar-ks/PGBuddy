@@ -2,6 +2,7 @@ package com.example.pgbuddy.Dtos;
 
 import lombok.Data;
 
+// DTO class for Cafe Order Item response
 @Data
 public class CafeOrderItemResponseDto {
     private Long cafeMenuId; // ID of the menu item being ordered

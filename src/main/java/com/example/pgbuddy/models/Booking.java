@@ -6,6 +6,10 @@ import lombok.Data;
 import java.util.Date;
 import java.util.List;
 
+/**
+ * Model class representing Booking details.
+ * Maps to the "bookings" table in the database.
+ */
 @Data
 @Entity
 @Table(name = "bookings")

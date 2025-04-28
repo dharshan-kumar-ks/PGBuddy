@@ -10,6 +10,7 @@ import lombok.Setter;
 
 import java.util.Date;
 
+// DTO class for Food details
 @Getter
 @Setter
 public class FoodDto {

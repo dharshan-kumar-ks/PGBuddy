@@ -6,6 +6,7 @@ import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 import lombok.Data;
 
+// Feedback class representing user feedback
 @Data
 @Entity
 @Table(name = "feedbacks")

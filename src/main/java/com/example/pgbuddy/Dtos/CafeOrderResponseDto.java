@@ -4,6 +4,7 @@ import lombok.Data;
 
 import java.util.List;
 
+// DTO class for Cafe Order response
 @Data
 public class CafeOrderResponseDto {
     //private Long user; // User ID

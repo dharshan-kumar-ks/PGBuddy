@@ -7,6 +7,7 @@ import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
 import lombok.Data;
 
+// Model class for Message details
 @Data
 @Entity
 @Table(name = "messages")

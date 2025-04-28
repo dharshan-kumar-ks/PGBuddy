@@ -5,6 +5,7 @@ import lombok.Data;
 import lombok.Getter;
 import lombok.Setter;
 
+// DTO class for User details
 @Getter
 @Setter
 @Builder

@@ -8,6 +8,7 @@ import lombok.Data;
 
 import java.time.LocalDate;
 
+// InternetUsage class representing the internet usage details
 @Data
 @Entity
 @Table(name = "internet_usage")

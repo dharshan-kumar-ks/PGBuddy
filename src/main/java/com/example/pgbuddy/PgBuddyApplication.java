@@ -24,6 +24,7 @@ public class PgBuddyApplication {
         //        System.setProperty(entry.getKey(), entry.getValue())
         //);
 
+        // Start the Spring application
         SpringApplication.run(PgBuddyApplication.class, args);
     }
 
@@ -38,6 +39,7 @@ public class PgBuddyApplication {
 //        };
 //    }
 
+    // Check if the database connection is successful at application startup.
     @Bean
     CommandLineRunner testConnection(DataSource dataSource) {
         return args -> {
