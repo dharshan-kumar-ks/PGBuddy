@@ -101,7 +101,11 @@ PGBuddy/
 └── README.md
 ```
 
-### 🧠 Project Architecture Flow (Mind Map)
+### 🧠 Project Architecture Flow
+
+This project follows a modular, layered architecture that cleanly separates concerns across frontend, backend, authentication, business logic, and data access layers.
+
+#### 🔄 Flow of a Typical Request
 
 - **User Request**
   - ⬇️
@@ -116,6 +120,11 @@ PGBuddy/
 - **Repositories** (Database Access)
   - ⬇️
 - **Database** (SQL - Hosted on Railway)
+
+#### 🖼️ Sequence Diagram
+
+For a more detailed visualization of the request and WebSocket flow, refer to the sequence diagram below:
+<img width="1200" alt="Architecture Sequence Diagram" src="https://github.com/dharshan-kumar-ks/PGBuddy-FrontEnd/blob/main/app_ui_images/sequence-diagram.jpg" />
 
 ---
 ## 📍 API Endpoints (Important Ones)
